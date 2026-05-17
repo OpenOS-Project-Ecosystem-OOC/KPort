@@ -134,7 +134,21 @@ dep_map:
   libxi-dev:                 "~apt:libxi-dev"
   libxrender-dev:            "~apt:libxrender-dev"
 
+  # ── Documentation tools (apt) ─────────────────────────────────────────────
+  doxygen:                   "~apt:doxygen"
+  graphviz:                  "~apt:graphviz"
+  # ── Runtime system libs (apt) ─────────────────────────────────────────────
+  libb2-dev:                 "~apt:libb2-dev"
+  libb2-1:                   "~apt:libb2-1"
+  libbz2-1.0:                "~apt:libbz2-1.0"
+  liblzma5:                  "~apt:liblzma5"
+  liblz4-1:                  "~apt:liblz4-1"
+  libzstd1:                  "~apt:libzstd1"
+  zlib1g:                    "~apt:zlib1g"
   # ── Ignored (handled implicitly by build system) ──────────────────────────
   debhelper-compat:          "~ignore"
   dh-sequence-kf6:           "~ignore"
   dh-sequence-pkgkde-symbolshelper: "~ignore"
+  kde-qdoc-common-dev:       "~ignore"
+  pkg-kde-tools-neon:        "~ignore"
+  kf6-extra-cmake-modules:   "kf6-extra-cmake-modules"

@@ -1,63 +1,63 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier1/karchive
-# Promoted from generated/ — reviewed and tested against KDE Neon Noble Numbat.
+# KPort pacscript — frameworks/tier2/kf6-karchive
+# Promoted from generated/ — built and tested on Ubuntu 24.04 Noble (KDE Neon PPA).
 #
-# KArchive provides classes for easy reading, creation and manipulation of
-# "archive" formats like ZIP and TAR. Part of KDE Frameworks 6 Tier 1.
+# Qt 6 addon providing access to numerous types of archives
 
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="kf6-karchive"
-pkgver="6.3.0"
-pkgdesc="KDE Frameworks 6 — file archiving and compression library"
-url="https://invent.kde.org/frameworks/karchive"
+pkgver="6.26.0"
+pkgdesc="Qt 6 addon providing access to numerous types of archives"
+url="https://projects.kde.org/projects/frameworks/karchive"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/${pkgver%.*}/karchive-${pkgver}.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/karchive-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "a7fdf6d0b8db88d60aa52bcc87d8e00d95391a1ad39a4b2a8e9f3027b8ff4035"
 )
 
 depends=(
+  "qt6-base"
+  "libb2-1"
   "libbz2-1.0"
   "liblzma5"
-  "zlib1g"
+  "liblz4-1"
   "libzstd1"
-  "qt6-base"
+  "zlib1g"
 )
 
 makedepends=(
   "cmake"
-  "extra-cmake-modules"
-  "qt6-base-dev"
+  "doxygen"
+  "graphviz"
+  "kf6-extra-cmake-modules"
   "libbz2-dev"
   "liblzma-dev"
-  "zlib1g-dev"
   "libzstd-dev"
-  "pkg-config"
-  "ninja-build"
+  "qt6-base-dev"
+  "qt6-tools-dev"
+  "zlib1g-dev"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
 KSLOT="6"
-KCATEGORY="frameworks/tier1"
-KNEON_CHANNEL="stable"
+KCATEGORY="frameworks/tier2"
+KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
 KGPU_MIN="gpu-sw"
 
 KUSE=(
-  "-docs"    # API documentation via QDoc
-  "-test"    # Build and run test suite
+  "-docs"
+  "-test"
 )
 
 # ── Build ─────────────────────────────────────────────────────────────────────
 
 build() {
-  # Source KPort USE flag helpers
-  # shellcheck source=/usr/lib/kport/use-helpers.sh
   _kport_lib="${KPORT_LIB_DIR:-/usr/lib/kport}/use-helpers.sh"
   [[ -f "$_kport_lib" ]] && source "$_kport_lib"
 
