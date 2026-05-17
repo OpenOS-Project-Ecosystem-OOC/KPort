@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+# kport — KPort package manager
+#
+# Usage: kport <command> [args...]
+#
+# Commands:
+#   detect              Detect hardware and write hardware.conf
+#   search  <query>     Search for packages by name or description
+#   info    <pkg>       Show package metadata, USE flags, and dependencies
+#   install <pkg...>    Build and install packages
+#   remove  <pkg...>    Uninstall packages
+#   upgrade             Rebuild world set for changed USE flags or versions
+#   promote <pkg>       Move a generated/ skeleton to packages/ for review
+#   sync                Pull updates for all enabled overlay repositories
+#
+# Global options:
+#   --root <path>       KPort tree root (default: auto-detected)
+#   --db <path>         Package database dir (default: ~/.local/share/kport/db)
+#   --no-color          Disable colour output
+#   --verbose           Verbose output
+#   --version           Print kport version
+#   --help              Print this help
+
+set -uo pipefail
+
+# ── Locate kport tree root ────────────────────────────────────────────────────
+# Resolve from the binary location: bin/kport → parent is KPORT_ROOT.
+# Supports symlinks (e.g. /usr/bin/kport → /usr/lib/kport/bin/kport).
+
+_kport_resolve_root() {
+  local bin_path
+  bin_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  # bin/ is one level below root
+  echo "$(cd "${bin_path}/.." && pwd)"
+}
+
+KPORT_ROOT="${KPORT_ROOT:-$(_kport_resolve_root)}"
+KPORT_LIB="${KPORT_LIB_DIR:-${KPORT_ROOT}/lib/kport}"
+KPORT_DB="${KPORT_DB_DIR:-${HOME}/.local/share/kport/db}"
+KPORT_CONF="${KPORT_CONF_DIR:-${HOME}/.config/kport}"
+KPORT_VERSION="0.1.0"
+
+export KPORT_ROOT KPORT_LIB KPORT_DB KPORT_CONF
+
+# ── Colour helpers ────────────────────────────────────────────────────────────
+
+_kport_setup_color() {
+  if [[ -t 1 && "${NO_COLOR:-}" == "" && "${KPORT_NO_COLOR:-}" == "" ]]; then
+    C_BOLD='\033[1m'
+    C_RED='\033[0;31m'
+    C_GREEN='\033[0;32m'
+    C_YELLOW='\033[0;33m'
+    C_CYAN='\033[0;36m'
+    C_DIM='\033[2m'
+    C_RESET='\033[0m'
+  else
+    C_BOLD='' C_RED='' C_GREEN='' C_YELLOW='' C_CYAN='' C_DIM='' C_RESET=''
+  fi
+  export C_BOLD C_RED C_GREEN C_YELLOW C_CYAN C_DIM C_RESET
+}
+
+_kport_setup_color
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+
+KPORT_VERBOSE="${KPORT_VERBOSE:-false}"
+
+kport_info()    { echo -e "${C_GREEN}::${C_RESET} $*"; }
+kport_warn()    { echo -e "${C_YELLOW}!! ${C_RESET}$*" >&2; }
+kport_error()   { echo -e "${C_RED}!! ${C_RESET}$*" >&2; }
+kport_verbose() { [[ "$KPORT_VERBOSE" == "true" ]] && echo -e "${C_DIM}   $*${C_RESET}"; }
+kport_die()     { kport_error "$*"; exit 1; }
+
+export -f kport_info kport_warn kport_error kport_verbose kport_die
+
+# ── Global option parsing ─────────────────────────────────────────────────────
+
+KPORT_ARGS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --root)       KPORT_ROOT="$2";    shift 2 ;;
+    --db)         KPORT_DB="$2";      shift 2 ;;
+    --no-color)   _kport_setup_color; shift ;;  # re-init with NO_COLOR
+    --verbose)    KPORT_VERBOSE=true; shift ;;
+    --version)
+      echo "kport ${KPORT_VERSION}"
+      exit 0 ;;
+    --help|-h)
+      sed -n '2,/^$/p' "${BASH_SOURCE[0]}" | grep '^#' | sed 's/^# \?//'
+      exit 0 ;;
+    --) shift; KPORT_ARGS+=("$@"); break ;;
+    -*) kport_die "Unknown option: $1 (try 'kport --help')" ;;
+    *)  KPORT_ARGS+=("$1"); shift ;;
+  esac
+done
+
+# ── Dispatch ──────────────────────────────────────────────────────────────────
+
+if [[ ${#KPORT_ARGS[@]} -eq 0 ]]; then
+  sed -n '2,/^$/p' "${BASH_SOURCE[0]}" | grep '^#' | sed 's/^# \?//'
+  exit 0
+fi
+
+KPORT_CMD="${KPORT_ARGS[0]}"
+KPORT_CMD_ARGS=("${KPORT_ARGS[@]:1}")
+
+CMD_SCRIPT="${KPORT_LIB}/cmd/${KPORT_CMD}.sh"
+
+if [[ ! -f "$CMD_SCRIPT" ]]; then
+  kport_error "Unknown command: ${KPORT_CMD}"
+  echo ""
+  echo "Run 'kport --help' for available commands."
+  exit 1
+fi
+
+# Source common library before dispatching
+# shellcheck source=lib/kport/common.sh
+source "${KPORT_LIB}/common.sh"
+
+exec bash "$CMD_SCRIPT" "${KPORT_CMD_ARGS[@]}"

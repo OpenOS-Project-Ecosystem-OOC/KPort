@@ -18,7 +18,11 @@
 #   export KPORT_LIB_DIR=~/.local/lib/kport
 #
 # Runtime files installed:
-#   lib/kport/use-helpers.sh  →  <prefix>/lib/kport/use-helpers.sh
+#   lib/kport/use-helpers.sh        →  <prefix>/lib/kport/use-helpers.sh
+#   lib/kport/common.sh             →  <prefix>/lib/kport/common.sh
+#   lib/kport/resolve.sh            →  <prefix>/lib/kport/resolve.sh
+#   lib/kport/cmd/*.sh              →  <prefix>/lib/kport/cmd/*.sh
+#   bin/kport                       →  <prefix>/bin/kport
 
 set -uo pipefail
 
@@ -79,23 +83,46 @@ info "  Dest   : ${LIB_DEST}/"
 [[ "$DRY_RUN" == "true" ]] && info "  Mode   : dry run"
 echo ""
 
-# Verify source files exist
-[[ -f "${KPORT_ROOT}/lib/kport/use-helpers.sh" ]] \
-  || error "Source file not found: ${KPORT_ROOT}/lib/kport/use-helpers.sh"
+# ── Verify source tree ────────────────────────────────────────────────────────
 
-# Install runtime library files
-install_file \
-  "${KPORT_ROOT}/lib/kport/use-helpers.sh" \
-  "${LIB_DEST}" \
-  "use-helpers.sh"
+for required in lib/kport/use-helpers.sh lib/kport/common.sh lib/kport/resolve.sh bin/kport; do
+  [[ -f "${KPORT_ROOT}/${required}" ]] \
+    || error "Source file not found: ${KPORT_ROOT}/${required}"
+done
+
+# ── Install library files ─────────────────────────────────────────────────────
+
+install_file "${KPORT_ROOT}/lib/kport/use-helpers.sh" "${LIB_DEST}" "use-helpers.sh"
+install_file "${KPORT_ROOT}/lib/kport/common.sh"      "${LIB_DEST}" "common.sh"
+install_file "${KPORT_ROOT}/lib/kport/resolve.sh"     "${LIB_DEST}" "resolve.sh"
+
+# Install command scripts
+CMD_DEST="${LIB_DEST}/cmd"
+for cmd_script in "${KPORT_ROOT}/lib/kport/cmd/"*.sh; do
+  [[ -f "$cmd_script" ]] || continue
+  install_file "$cmd_script" "${CMD_DEST}" "$(basename "$cmd_script")"
+done
+
+# ── Install kport binary ──────────────────────────────────────────────────────
+
+BIN_DEST="${PREFIX}/bin"
+
+if [[ "$DRY_RUN" == "true" ]]; then
+  dry "install ${KPORT_ROOT}/bin/kport → ${BIN_DEST}/kport  (mode 755)"
+else
+  mkdir -p "$BIN_DEST" || error "Cannot create ${BIN_DEST}"
+  install -m 755 "${KPORT_ROOT}/bin/kport" "${BIN_DEST}/kport" \
+    || error "Failed to install kport binary"
+  info "  installed ${BIN_DEST}/kport"
+fi
 
 echo ""
 info "Done."
 
 if [[ "$USER_INSTALL" == "true" && "$DRY_RUN" != "true" ]]; then
   echo ""
-  info "User install: pacscripts look for /usr/lib/kport/use-helpers.sh by default."
-  info "To use the user-installed path, add to your shell profile:"
-  info "  export KPORT_LIB_DIR=${LIB_DEST}"
-  info "Or symlink: sudo ln -s ${LIB_DEST} /usr/lib/kport"
+  info "User install complete. Add to your shell profile:"
+  info "  export PATH=\"${BIN_DEST}:\$PATH\""
+  info "  export KPORT_ROOT=\"${KPORT_ROOT}\""
+  info "  export KPORT_LIB_DIR=\"${LIB_DEST}\""
 fi
