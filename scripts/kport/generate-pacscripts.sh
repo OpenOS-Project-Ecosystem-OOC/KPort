@@ -143,7 +143,7 @@ gl_group_id() {
 # ── debian/control parser ─────────────────────────────────────────────────────
 
 # Parse a debian/control file and emit key=value pairs to stdout.
-# Emitted keys: SOURCE, HOMEPAGE, BUILD_DEPENDS, PKG_NAME, PKG_DESC
+# Emitted keys: SOURCE, HOMEPAGE, BUILD_DEPENDS, RUNTIME_DEPENDS, PKG_NAME, PKG_DESC
 parse_control() {
   python3 - "$1" << 'PYEOF'
 import sys, re
@@ -223,6 +223,22 @@ if primary:
         pkg_desc = pkg_desc[:77] + '...'
     print(f"PKG_NAME={pkg_name}")
     print(f"PKG_DESC={pkg_desc}")
+
+    # Runtime Depends: strip substitution variables (${shlibs:Depends} etc.)
+    # and version constraints, keep only named package deps.
+    raw_rd = primary.get('depends', '')
+    rdeps = []
+    for dep in raw_rd.split(','):
+        dep = dep.strip()
+        # Drop Debian substitution variables entirely
+        if dep.startswith('${'):
+            continue
+        dep = re.sub(r'\s*\([^)]*\)', '', dep)  # strip version constraints
+        dep = dep.strip().strip(',').strip()
+        dep = dep.split('|')[0].strip()          # first alternative only
+        if dep:
+            rdeps.append(dep)
+    print(f"RUNTIME_DEPENDS={' '.join(rdeps)}")
 PYEOF
 }
 
@@ -468,9 +484,9 @@ render_pacscript() {
   local category="$6"
   local gpu_min="$7"
   local slot="$8"
-  # makedepends passed as remaining args via a temp file
   local makedepends_file="$9"
   local use_flags_file="${10}"
+  local depends_file="${11:-}"
 
   local makedepends_arr=()
   while IFS= read -r line; do
@@ -482,8 +498,31 @@ render_pacscript() {
     [[ -n "$line" ]] && use_flags_arr+=("$line")
   done < "$use_flags_file"
 
+  local depends_arr=()
+  if [[ -n "$depends_file" && -f "$depends_file" ]]; then
+    while IFS= read -r line; do
+      [[ -n "$line" ]] && depends_arr+=("$line")
+    done < "$depends_file"
+  fi
+
   # Determine KSLOT from slot arg
   local kslot="${slot:-0}"
+
+  # Build depends block (runtime)
+  local depends_block=""
+  local depends_comment=""
+  if [[ ${#depends_arr[@]} -gt 0 ]]; then
+    for dep in "${depends_arr[@]}"; do
+      case "$dep" in
+        "~apt:"*) depends_block+="  \"${dep#\~apt:}\"\n" ;;
+        "~virtual:"*|"~ignore") ;;
+        *) depends_block+="  \"${dep}\"\n" ;;
+      esac
+    done
+  else
+    depends_comment="  # No named runtime deps found in debian/control (only \${shlibs:Depends})."$'\n'
+    depends_comment+="  # Populate after a test build by inspecting ldd output or dpkg -I."
+  fi
 
   # Build makedepends block
   local makedepends_block=""
@@ -531,7 +570,9 @@ sha256sums=(
   "SKIP"   # replace with actual sha256 after download
 )
 
-depends=()   # TODO: populate from runtime Depends in debian/control
+depends=(
+$(printf '%b' "${depends_comment}${depends_block}")\
+)
 
 makedepends=(
 $(printf '%b' "$makedepends_block")\
@@ -611,12 +652,13 @@ process_project() {
 
   [[ -z "$parsed" ]] && { warn "  Failed to parse debian/control — skipping"; return 0; }
 
-  local source_name homepage build_depends pkg_name pkg_desc
-  source_name=$(echo "$parsed"    | grep '^SOURCE='        | cut -d= -f2-)
-  homepage=$(echo "$parsed"       | grep '^HOMEPAGE='      | cut -d= -f2-)
-  build_depends=$(echo "$parsed"  | grep '^BUILD_DEPENDS=' | cut -d= -f2-)
-  pkg_name=$(echo "$parsed"       | grep '^PKG_NAME='      | cut -d= -f2-)
-  pkg_desc=$(echo "$parsed"       | grep '^PKG_DESC='      | cut -d= -f2-)
+  local source_name homepage build_depends runtime_depends pkg_name pkg_desc
+  source_name=$(echo "$parsed"       | grep '^SOURCE='          | cut -d= -f2-)
+  homepage=$(echo "$parsed"          | grep '^HOMEPAGE='        | cut -d= -f2-)
+  build_depends=$(echo "$parsed"     | grep '^BUILD_DEPENDS='   | cut -d= -f2-)
+  runtime_depends=$(echo "$parsed"   | grep '^RUNTIME_DEPENDS=' | cut -d= -f2-)
+  pkg_name=$(echo "$parsed"          | grep '^PKG_NAME='        | cut -d= -f2-)
+  pkg_desc=$(echo "$parsed"          | grep '^PKG_DESC='        | cut -d= -f2-)
 
   [[ -z "$pkg_name" ]] && pkg_name="$project_name"
   [[ -z "$pkg_desc" ]] && pkg_desc="KDE package: ${pkg_name}"
@@ -655,6 +697,13 @@ process_project() {
   translate_build_depends makedepends "$build_depends"
   printf '%s\n' "${makedepends[@]}" > "$tmp_makedepends"
 
+  # Translate runtime depends
+  local tmp_depends
+  tmp_depends=$(mktemp)
+  local rundeps=()
+  translate_build_depends rundeps "$runtime_depends"
+  printf '%s\n' "${rundeps[@]}" > "$tmp_depends"
+
   # Infer USE flags
   local tmp_useflags
   tmp_useflags=$(mktemp)
@@ -666,13 +715,13 @@ process_project() {
 
   if [[ -f "$out_file" && "$FORCE" != "true" ]]; then
     info "  skip  ${out_file} (exists, use --force to overwrite)"
-    rm -f "$tmp_makedepends" "$tmp_useflags"
+    rm -f "$tmp_makedepends" "$tmp_depends" "$tmp_useflags"
     return 0
   fi
 
   if [[ "$DRY_RUN" == "true" ]]; then
     info "  [dry-run] would write ${out_file}"
-    rm -f "$tmp_makedepends" "$tmp_useflags"
+    rm -f "$tmp_makedepends" "$tmp_depends" "$tmp_useflags"
     return 0
   fi
 
@@ -680,11 +729,11 @@ process_project() {
   render_pacscript \
     "$pkg_name" "$version" "$pkg_desc" "$homepage" \
     "$source_url" "$category" "$gpu_min" "$slot" \
-    "$tmp_makedepends" "$tmp_useflags" \
+    "$tmp_makedepends" "$tmp_useflags" "$tmp_depends" \
     > "$out_file"
 
   info "  wrote ${out_file}"
-  rm -f "$tmp_makedepends" "$tmp_useflags"
+  rm -f "$tmp_makedepends" "$tmp_depends" "$tmp_useflags"
 }
 
 # ── Cache-aware project iterator ─────────────────────────────────────────────
