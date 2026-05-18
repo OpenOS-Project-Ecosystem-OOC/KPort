@@ -57,10 +57,10 @@ local_args=()
 [[ "$SHOW_FLAGS" == "true" ]] && local_args+=(--show-flags)
 
 if [[ "$DRY_RUN" == "true" ]]; then
-  KPORT_CONF_DIR="$KPORT_CONF" bash "$DETECT_SCRIPT" "${local_args[@]}"
+  KPORT_CONFIG_DIR="$KPORT_CONF" bash "$DETECT_SCRIPT" "${local_args[@]}"
 else
   mkdir -p "$KPORT_CONF"
-  KPORT_CONF_DIR="$KPORT_CONF" bash "$DETECT_SCRIPT" "${local_args[@]}"
+  KPORT_CONFIG_DIR="$KPORT_CONF" bash "$DETECT_SCRIPT" "${local_args[@]}"
   kport_info "Written: ${KPORT_HW_CONF}"
 fi
 
