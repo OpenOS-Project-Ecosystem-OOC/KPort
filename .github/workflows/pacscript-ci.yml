@@ -10,18 +10,16 @@ on:
     paths:
       - 'packages/**'
       - 'config/dep-map.yml'
-      - 'lib/kport/resolve.sh'
-      - 'lib/kport/common.sh'
-      - 'scripts/kport/lint-pacscripts.sh'
-      - 'scripts/kport/resolver-check.sh'
+      - 'lib/**'
+      - 'bin/kport'
+      - 'scripts/kport/**'
   pull_request:
     paths:
       - 'packages/**'
       - 'config/dep-map.yml'
-      - 'lib/kport/resolve.sh'
-      - 'lib/kport/common.sh'
-      - 'scripts/kport/lint-pacscripts.sh'
-      - 'scripts/kport/resolver-check.sh'
+      - 'lib/**'
+      - 'bin/kport'
+      - 'scripts/kport/**'
   workflow_dispatch:
 
 concurrency:
@@ -32,6 +30,19 @@ permissions:
   contents: read
 
 jobs:
+  shell-syntax:
+    name: Shell syntax check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: bash -n on all kport shell scripts
+        run: |
+          find lib/ bin/ scripts/kport/ -type f \( -name "*.sh" -o -name "kport" \) \
+            | sort | tee /dev/stderr | xargs bash -n
+          echo "Shell syntax OK"
+
   lint:
     name: Lint pacscripts
     runs-on: ubuntu-latest

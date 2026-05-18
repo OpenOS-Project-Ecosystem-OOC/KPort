@@ -30,10 +30,10 @@ depends=(
   "kf6-kservice"
   "kf6-kwidgetsaddons"
   "kpim6-akonadi-mime"
-  "~apt:kpim6-akonadi-calendar"
+  "kpim6-akonadi-calendar"
   "kpim6-kcalendarutils"
-  "~apt:kpim6-kidentitymanagement"
-  "~apt:kpim6-kmime"
+  "kpim6-kidentitymanagement"
+  "kpim6-kmime"
   "qt6-base"
 )
 

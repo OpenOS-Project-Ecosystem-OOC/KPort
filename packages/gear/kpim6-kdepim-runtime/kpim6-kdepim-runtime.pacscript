@@ -24,7 +24,7 @@ depends=(
   "kpim6-akonadi"
   "kpim6-kldap"
   "kpim6-akonadi-contacts"
-  "~apt:kpim6-libksieve"
+  "kpim6-libksieve"
   "kf6-kcalendarcore"
   "kf6-kcmutils"
   "kf6-kcodecs"

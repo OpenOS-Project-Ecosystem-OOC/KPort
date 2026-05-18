@@ -56,6 +56,15 @@ _kport_resolve_one() {
     return 0
   }
 
+  # Mask check — blocked packages are never installed
+  local category
+  category=$(kport_pacscript_var "$pacscript" KCATEGORY)
+  if kport_is_masked "$pkgname" "$category"; then
+    kport_warn "  ${pkgname}: masked — skipping (unmask in ~/.config/kport/package.unmask)"
+    unset '_KPORT_RESOLVE_VISITED[$pkgname]'
+    return 0
+  fi
+
   # Skip already-installed unless KPORT_RESOLVE_ALL=true
   if [[ "${KPORT_RESOLVE_ALL:-false}" != "true" ]]; then
     if kport_is_installed "$pkgname"; then
@@ -91,7 +100,7 @@ kport_resolve() {
     _kport_resolve_one "$pkg"
   done
 
-  printf '%s\n' "${_KPORT_RESOLVE_ORDER[@]}"
+  [[ ${#_KPORT_RESOLVE_ORDER[@]} -gt 0 ]] && printf '%s\n' "${_KPORT_RESOLVE_ORDER[@]}"
 }
 
 # kport_resolve_print_plan <pkgname...>

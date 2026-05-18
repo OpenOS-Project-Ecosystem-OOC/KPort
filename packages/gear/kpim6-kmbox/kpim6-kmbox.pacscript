@@ -18,7 +18,7 @@ sha256sums=(
 )
 
 depends=(
-  "~apt:kpim6-kmime"
+  "kpim6-kmime"
   "qt6-base"
 )
 
