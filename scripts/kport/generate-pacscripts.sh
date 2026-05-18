@@ -191,6 +191,7 @@ deps = []
 for dep in raw_bd.split(','):
     dep = dep.strip()
     dep = re.sub(r'\s*\([^)]*\)', '', dep)  # strip (>= 1.0) etc.
+    dep = re.sub(r'\s*\[[^\]]*\]', '', dep) # strip [arch] qualifiers
     dep = dep.strip().strip(',').strip()
     dep = dep.split('|')[0].strip()         # take first alternative
     if dep:
@@ -295,6 +296,7 @@ if primary:
         if dep.startswith('${'):
             continue
         dep = re.sub(r'\s*\([^)]*\)', '', dep)  # strip version constraints
+        dep = re.sub(r'\s*\[[^\]]*\]', '', dep) # strip [arch] qualifiers
         dep = dep.strip().strip(',').strip()
         dep = dep.split('|')[0].strip()          # first alternative only
         if dep:
@@ -307,11 +309,11 @@ PYEOF
 # Input: raw changelog text on stdin
 # Output: version string (e.g. "6.26.0")
 parse_version() {
-  # Args: $1 = raw changelog text (first line is sufficient)
+  # Args: $1 = first line of debian/changelog only (not the full file)
   python3 - "$1" << 'PYEOF'
 import sys, re
 # First line of changelog: "pkgname (epoch:upstream-debian) suite; urgency=..."
-line = sys.argv[1].splitlines()[0] if sys.argv[1] else ''
+line = sys.argv[1].strip() if len(sys.argv) > 1 else ''
 m = re.match(r'^\S+\s+\((?:\d+:)?([^)]+)\)', line)
 if m:
     ver = m.group(1).strip()
@@ -324,10 +326,10 @@ PYEOF
 # Input: raw watch file text on stdin
 # Output: source URL template with $pkgver placeholder
 parse_watch_url() {
-  # Args: $1 = raw watch file text
-  python3 - "$1" << 'PYEOF'
+  # Args: $1 = raw watch file text (passed via stdin to avoid ARG_MAX limits)
+  echo "$1" | python3 - << 'PYEOF'
 import sys, re
-content = sys.argv[1] if len(sys.argv) > 1 else ''
+content = sys.stdin.read()
 for line in content.splitlines():
     line = line.strip()
     if not line or line.startswith('version=') or line.startswith('#'):
@@ -914,7 +916,9 @@ process_project() {
 
   # Fetch debian/changelog for version
   local changelog_raw version
-  changelog_raw=$(gl_raw "$project_id" "debian/changelog" "$branch") || true
+  # Fetch only the first line — full changelogs can be 100s of KB and exceed
+  # shell argument limits when passed to parse_version.
+  changelog_raw=$(gl_raw "$project_id" "debian/changelog" "$branch" | head -1) || true
   version=$(parse_version "$changelog_raw")
   [[ -z "$version" ]] && version="0.0.0"
 

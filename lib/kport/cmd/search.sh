@@ -34,7 +34,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-[[ -z "$QUERY" ]] && kport_die "Usage: kport search <query>"
+[[ -z "$QUERY" && "$INSTALLED_ONLY" != "true" ]] && kport_die "Usage: kport search <query>"
 
 # ── Search ────────────────────────────────────────────────────────────────────
 

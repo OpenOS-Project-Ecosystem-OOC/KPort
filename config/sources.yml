@@ -46,10 +46,12 @@ sources:
     enabled: true
 
   # KDE Gear — Neon packaging
+  # Gear apps (26.x.x) share the neon/kde group with Plasma (6.x.x).
+  # The generator produces all packages; post-processing filters to 26.x.x only.
   - name: KDE Gear (Neon)
     type: gitlab
     base_url: https://invent.kde.org
-    group: neon/neon-packaging
+    group: neon/kde
     category: gear
     branch: Neon/unstable
     enabled: true
