@@ -312,6 +312,100 @@ echo 'NPU_TIER="npu-dedicated"' >> "$hw10"
 _kw_run "NPU tier pass (system npu-dedicated, pkg requires npu-igpu)" \
   "$ps10" "$kw10" "$hw10" "" "pass"
 
+# ── ARM CPU tier tests ────────────────────────────────────────────────────────
+
+# ── Test 11: ARM CPU tier block (system aarch64-v8, pkg requires aarch64-v9) ──
+ps11="${KW_TMP}/ps11.pacscript"
+hw11="${KW_TMP}/hw11.conf"
+kw11="${KW_TMP}/kw11.yml"
+_kw_pacscript "$ps11" 'KCPU_MIN="aarch64-v9"'
+_kw_yml "$kw11" "stable, testing, unstable"
+cp "$kw11" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw11" "aarch64-v8" "gpu-mali-g52"
+_kw_run "ARM CPU tier block (system aarch64-v8, pkg requires aarch64-v9)" \
+  "$ps11" "$kw11" "$hw11" "" "block"
+
+# ── Test 12: ARM CPU tier pass (system aarch64-v9.2, pkg requires aarch64-v8.2) ─
+ps12="${KW_TMP}/ps12.pacscript"
+hw12="${KW_TMP}/hw12.conf"
+kw12="${KW_TMP}/kw12.yml"
+_kw_pacscript "$ps12" 'KCPU_MIN="aarch64-v8.2"'
+_kw_yml "$kw12" "stable, testing, unstable"
+cp "$kw12" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw12" "aarch64-v9.2" "gpu-mali-g610"
+_kw_run "ARM CPU tier pass (system aarch64-v9.2, pkg requires aarch64-v8.2)" \
+  "$ps12" "$kw12" "$hw12" "" "pass"
+
+# ── Test 13: cross-arch CPU — x86 pkg on ARM system → pass (undefined, not blocked) ─
+ps13="${KW_TMP}/ps13.pacscript"
+hw13="${KW_TMP}/hw13.conf"
+kw13="${KW_TMP}/kw13.yml"
+_kw_pacscript "$ps13" 'KCPU_MIN="x86-64-v4"'
+_kw_yml "$kw13" "stable, testing, unstable"
+cp "$kw13" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw13" "aarch64-v8" "gpu-mali-g52"
+_kw_run "cross-arch CPU (x86-64-v4 min on aarch64-v8 system) → not blocked by tier check" \
+  "$ps13" "$kw13" "$hw13" "" "pass"
+
+# ── ARM GPU tier tests ────────────────────────────────────────────────────────
+
+# ── Test 14: Mali GPU tier block (system mali-g52, pkg requires mali-g610) ───
+ps14="${KW_TMP}/ps14.pacscript"
+hw14="${KW_TMP}/hw14.conf"
+kw14="${KW_TMP}/kw14.yml"
+_kw_pacscript "$ps14" 'KGPU_MIN="gpu-mali-g610"'
+_kw_yml "$kw14" "stable, testing, unstable"
+cp "$kw14" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw14" "aarch64-v8.2" "gpu-mali-g52"
+_kw_run "Mali GPU tier block (system gpu-mali-g52, pkg requires gpu-mali-g610)" \
+  "$ps14" "$kw14" "$hw14" "" "block"
+
+# ── Test 15: Mali GPU tier pass (system immortalis, pkg requires mali-g610) ──
+ps15="${KW_TMP}/ps15.pacscript"
+hw15="${KW_TMP}/hw15.conf"
+kw15="${KW_TMP}/kw15.yml"
+_kw_pacscript "$ps15" 'KGPU_MIN="gpu-mali-g610"'
+_kw_yml "$kw15" "stable, testing, unstable"
+cp "$kw15" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw15" "aarch64-v9" "gpu-immortalis-g715"
+_kw_run "Mali GPU tier pass (system gpu-immortalis-g715, pkg requires gpu-mali-g610)" \
+  "$ps15" "$kw15" "$hw15" "" "pass"
+
+# ── Test 16: cross-family GPU — x86 pkg on Mali system → pass (undefined) ───
+ps16="${KW_TMP}/ps16.pacscript"
+hw16="${KW_TMP}/hw16.conf"
+kw16="${KW_TMP}/kw16.yml"
+_kw_pacscript "$ps16" 'KGPU_MIN="gpu-vk13"'
+_kw_yml "$kw16" "stable, testing, unstable"
+cp "$kw16" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw16" "aarch64-v9" "gpu-immortalis-g715"
+_kw_run "cross-family GPU (gpu-vk13 min on gpu-immortalis system) → not blocked by tier check" \
+  "$ps16" "$kw16" "$hw16" "" "pass"
+
+# ── RISC-V CPU tier tests ─────────────────────────────────────────────────────
+
+# ── Test 17: RISC-V CPU tier block (system rv64gc, pkg requires rv64gcv) ─────
+ps17="${KW_TMP}/ps17.pacscript"
+hw17="${KW_TMP}/hw17.conf"
+kw17="${KW_TMP}/kw17.yml"
+_kw_pacscript "$ps17" 'KCPU_MIN="riscv64-rv64gcv"'
+_kw_yml "$kw17" "stable, testing, unstable"
+cp "$kw17" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw17" "riscv64-rv64gc" "gpu-img-bxm"
+_kw_run "RISC-V CPU tier block (system rv64gc, pkg requires rv64gcv)" \
+  "$ps17" "$kw17" "$hw17" "" "block"
+
+# ── Test 18: RISC-V CPU tier pass (system rv64gcv, pkg requires rv64gc) ──────
+ps18="${KW_TMP}/ps18.pacscript"
+hw18="${KW_TMP}/hw18.conf"
+kw18="${KW_TMP}/kw18.yml"
+_kw_pacscript "$ps18" 'KCPU_MIN="riscv64-rv64gc"'
+_kw_yml "$kw18" "stable, testing, unstable"
+cp "$kw18" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw18" "riscv64-rv64gcv" "gpu-img-bxm"
+_kw_run "RISC-V CPU tier pass (system rv64gcv, pkg requires rv64gc)" \
+  "$ps18" "$kw18" "$hw18" "" "pass"
+
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 
 rm -rf "${KPORT_DB}"

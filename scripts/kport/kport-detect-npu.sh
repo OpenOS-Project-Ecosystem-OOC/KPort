@@ -194,14 +194,86 @@ detect_qualcomm_htp() {
 # ── ARM NPU detection ─────────────────────────────────────────────────────────
 
 detect_arm_npu() {
-  # Ethos-N NPU (Arm ML IP)
-  if lsmod 2>/dev/null | grep -q 'ethosn\|arm_npu'; then
+  # ── Apple Neural Engine (ANE) — M-series / A-series SoCs ─────────────────
+  # Detected via device tree compatible or the ane kernel driver (Asahi Linux).
+  if lsmod 2>/dev/null | grep -q '^ane\b' || \
+     find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
+       | xargs grep -ql 'apple,ane\|apple,h11-ane' 2>/dev/null; then
+    NPU_TIER="npu-ai"
+    NPU_MODEL="Apple Neural Engine"
+    NPU_TOPS="38"   # M3 ANE; M1=11 TOPS, M2=15.8 TOPS, M3=18 TOPS (per-cluster)
+    npu_flags+=("apple-ane")
+    return 0
+  fi
+
+  # ── Arm Ethos-N78 / N57 (high-tier ML IP, npu-ai) ────────────────────────
+  # Ethos-N78 is found in Samsung Exynos 2200+, MediaTek Dimensity 9000+.
+  # Kernel driver: ethosn; device tree: arm,ethos-n78 or arm,ethos-n57
+  if find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
+       | xargs grep -ql 'arm,ethos-n78\|arm,ethos-n57' 2>/dev/null || \
+     find /sys/bus/platform/devices -name 'ethosn*' 2>/dev/null | grep -q .; then
+    NPU_TIER="npu-ai"
+    NPU_MODEL="Arm Ethos-N78"
+    NPU_TOPS="4"
+    npu_flags+=("arm-npu" "ethos-n78")
+    return 0
+  fi
+
+  # ── Arm Ethos-N (generic / Ethos-N37/N57/N77, npu-dedicated) ─────────────
+  if lsmod 2>/dev/null | grep -q 'ethosn\|arm_npu' || \
+     find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
+       | xargs grep -ql 'arm,ethos-n' 2>/dev/null; then
     NPU_TIER="npu-dedicated"
     NPU_MODEL="Arm Ethos-N NPU"
     NPU_TOPS="4"
     npu_flags+=("arm-npu")
     return 0
   fi
+
+  # ── Arm Ethos-U (microNPU, embedded Cortex-M class, npu-dedicated) ────────
+  # Ethos-U55/U65 appear in Cortex-M55/M85 subsystems; unlikely on KDE Neon
+  # targets but included for completeness.
+  if find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
+       | xargs grep -ql 'arm,ethos-u' 2>/dev/null; then
+    NPU_TIER="npu-dedicated"
+    NPU_MODEL="Arm Ethos-U microNPU"
+    NPU_TOPS="1"
+    npu_flags+=("arm-npu" "ethos-u")
+    return 0
+  fi
+
+  # ── MediaTek APU (AI Processing Unit, npu-dedicated / npu-ai) ────────────
+  # Found in Dimensity SoCs. Driver: mtk_apu or vpu (older).
+  if lsmod 2>/dev/null | grep -q 'mtk_apu\|mtk_vpu\|vpu_service' || \
+     find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
+       | xargs grep -ql 'mediatek,apu\|mediatek,vpu' 2>/dev/null; then
+    # Dimensity 9000+ APU 590 ≈ npu-ai; older APU 3xx ≈ npu-dedicated
+    local apu_gen
+    apu_gen=$(find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
+      | xargs grep -h 'mediatek,apu' 2>/dev/null | grep -oP 'apu\d+' | head -1)
+    if [[ "${apu_gen:-0}" =~ apu[5-9] ]]; then
+      NPU_TIER="npu-ai"
+      NPU_TOPS="10"
+    else
+      NPU_TIER="npu-dedicated"
+      NPU_TOPS="4"
+    fi
+    NPU_MODEL="MediaTek APU"
+    npu_flags+=("mtk-apu")
+    return 0
+  fi
+
+  # ── Samsung Exynos NPU (npu-dedicated) ───────────────────────────────────
+  if lsmod 2>/dev/null | grep -q 'exynos_npu\|npu_exynos' || \
+     find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
+       | xargs grep -ql 'samsung,exynos-npu' 2>/dev/null; then
+    NPU_TIER="npu-dedicated"
+    NPU_MODEL="Samsung Exynos NPU"
+    NPU_TOPS="5"
+    npu_flags+=("exynos-npu")
+    return 0
+  fi
+
   return 1
 }
 

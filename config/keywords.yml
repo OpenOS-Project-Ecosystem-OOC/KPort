@@ -8,18 +8,46 @@
 #   testing   — Neon Testing Edition (RC-quality, mostly stable)
 #   unstable  — Neon Unstable / git builds (may break)
 #
-# CPU arch keywords:
-#   x86-64-v1  x86-64-v2  x86-64-v3  x86-64-v4
-#   aarch64    aarch64-v8.2
+# CPU arch keywords (ordered lowest → highest within each arch family):
+#   x86-64:   x86-64-v1  x86-64-v2  x86-64-v3  x86-64-v4
+#   aarch64:  aarch64-v8  aarch64-v8.2  aarch64-v9  aarch64-v9.2
+#   riscv64:  riscv64-rv64gc  riscv64-rv64gcv
 #
-# GPU keywords:
-#   gpu-sw  gpu-gl2  gpu-gl4  gpu-vk12  gpu-vk13
+# GPU tier keywords (ordered lowest → highest capability):
+#   x86-64 / discrete:  gpu-sw  gpu-gl2  gpu-gl4  gpu-vk12  gpu-vk13
+#   ARM SoC:            gpu-mali-g52  gpu-mali-g610  gpu-immortalis-g715
+#                       gpu-adreno-6xx  gpu-adreno-7xx
+#   RISC-V SoC:         gpu-img-bxm
 #
 # Default accepted keywords (equivalent to ACCEPT_KEYWORDS in make.conf):
 accept_keywords:
   stability: [stable, testing, unstable]
-  cpu: [x86-64-v1, x86-64-v2, x86-64-v3, x86-64-v4, aarch64, aarch64-v8.2]
-  gpu: [gpu-sw, gpu-gl2, gpu-gl4, gpu-vk12, gpu-vk13]
+  cpu:
+    - x86-64-v1
+    - x86-64-v2
+    - x86-64-v3
+    - x86-64-v4
+    - aarch64-v8
+    - aarch64-v8.2
+    - aarch64-v9
+    - aarch64-v9.2
+    - riscv64-rv64gc
+    - riscv64-rv64gcv
+  gpu:
+    # x86-64 / discrete tiers
+    - gpu-sw
+    - gpu-gl2
+    - gpu-gl4
+    - gpu-vk12
+    - gpu-vk13
+    # ARM SoC GPU tiers
+    - gpu-mali-g52
+    - gpu-mali-g610
+    - gpu-immortalis-g715
+    - gpu-adreno-6xx
+    - gpu-adreno-7xx
+    # RISC-V SoC GPU tiers
+    - gpu-img-bxm
 
 # Per-package keyword overrides
 # Users add their own in ~/.config/kport/package.accept_keywords

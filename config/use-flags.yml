@@ -86,6 +86,24 @@ use_flags:
     group: hwaccel
     hardware: true    # auto-enabled when NPU_TIER >= npu-igpu
 
+  gles:
+    description: "Enable OpenGL ES rendering backend (ARM/RISC-V SoC GPUs)"
+    default: false
+    group: hwaccel
+    hardware: true    # auto-enabled when GPU_VENDOR in (gpu-mali, gpu-immortalis, gpu-adreno, gpu-powervr)
+
+  arm-npu:
+    description: "Enable Arm Ethos NPU inference acceleration"
+    default: false
+    group: hwaccel
+    hardware: true    # auto-enabled when NPU_FLAGS contains arm-npu
+
+  apple-ane:
+    description: "Enable Apple Neural Engine acceleration (Asahi Linux)"
+    default: false
+    group: hwaccel
+    hardware: true    # auto-enabled when NPU_FLAGS contains apple-ane
+
   # ── AI / NPU ───────────────────────────────────────────────────────────────
 
   npu:

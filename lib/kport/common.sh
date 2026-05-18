@@ -298,29 +298,64 @@ kport_check_keyword() {
     local cpu_tier
     cpu_tier=$(grep "^CPU_TIER=" "$KPORT_HW_CONF" | cut -d'"' -f2)
     if [[ -n "$cpu_tier" ]]; then
-      local -a cpu_order=(x86-64-v1 x86-64-v2 x86-64-v3 x86-64-v4 aarch64 aarch64-v8.2)
-      local tier_idx=-1 min_idx=-1 i
-      for i in "${!cpu_order[@]}"; do
-        [[ "${cpu_order[$i]}" == "$cpu_tier" ]] && tier_idx=$i
-        [[ "${cpu_order[$i]}" == "$cpu_min"  ]] && min_idx=$i
-      done
-      [[ $tier_idx -ge 0 && $min_idx -ge 0 && $tier_idx -lt $min_idx ]] && return 1
+      # Each arch family is ordered independently. Cross-arch comparison is
+      # undefined — a package requiring x86-64-v3 cannot run on aarch64.
+      # We only block when both system tier and KCPU_MIN are in the same family.
+      local -a x86_cpu_order=(x86-64-v1 x86-64-v2 x86-64-v3 x86-64-v4)
+      local -a arm_cpu_order=(aarch64-v8 aarch64-v8.2 aarch64-v9 aarch64-v9.2)
+      local -a rv_cpu_order=(riscv64-rv64gc riscv64-rv64gcv)
+
+      _kport_cpu_family_check() {
+        local -n _ord=$1
+        local ti=-1 mi=-1 k
+        for k in "${!_ord[@]}"; do
+          [[ "${_ord[$k]}" == "$cpu_tier" ]] && ti=$k
+          [[ "${_ord[$k]}" == "$cpu_min"  ]] && mi=$k
+        done
+        # Both in this family and system is below minimum → block
+        [[ $ti -ge 0 && $mi -ge 0 && $ti -lt $mi ]] && return 1
+        return 0
+      }
+
+      _kport_cpu_family_check x86_cpu_order || return 1
+      _kport_cpu_family_check arm_cpu_order || return 1
+      _kport_cpu_family_check rv_cpu_order  || return 1
     fi
   fi
 
   # ── GPU tier check ────────────────────────────────────────────────────────
+  # GPU tiers are grouped by arch family. Cross-family comparison is undefined
+  # (an ARM Mali tier cannot be compared to an x86 Vulkan tier). We only block
+  # when both system GPU and KGPU_MIN are in the same family.
 
   if [[ -n "$gpu_min" && -f "${KPORT_HW_CONF:-}" ]]; then
     local gpu_tier
     gpu_tier=$(grep "^GPU_TIER=" "$KPORT_HW_CONF" | cut -d'"' -f2)
     if [[ -n "$gpu_tier" ]]; then
-      local -a gpu_order=(gpu-sw gpu-gl2 gpu-gl4 gpu-vk12 gpu-vk13)
-      local gtier_idx=-1 gmin_idx=-1 j
-      for j in "${!gpu_order[@]}"; do
-        [[ "${gpu_order[$j]}" == "$gpu_tier" ]] && gtier_idx=$j
-        [[ "${gpu_order[$j]}" == "$gpu_min"  ]] && gmin_idx=$j
-      done
-      [[ $gtier_idx -ge 0 && $gmin_idx -ge 0 && $gtier_idx -lt $gmin_idx ]] && return 1
+      # x86-64 / discrete GPU family
+      local -a x86_gpu_order=(gpu-sw gpu-gl2 gpu-gl4 gpu-vk12 gpu-vk13)
+      # ARM Mali/Immortalis family (Valhall entry → mid → Immortalis)
+      local -a mali_gpu_order=(gpu-mali-g52 gpu-mali-g610 gpu-immortalis-g715)
+      # Qualcomm Adreno family
+      local -a adreno_gpu_order=(gpu-adreno-6xx gpu-adreno-7xx)
+      # RISC-V PowerVR family (single tier for now)
+      local -a pvr_gpu_order=(gpu-img-bxm)
+
+      _kport_gpu_family_check() {
+        local -n _gord=$1
+        local gti=-1 gmi=-1 j
+        for j in "${!_gord[@]}"; do
+          [[ "${_gord[$j]}" == "$gpu_tier" ]] && gti=$j
+          [[ "${_gord[$j]}" == "$gpu_min"  ]] && gmi=$j
+        done
+        [[ $gti -ge 0 && $gmi -ge 0 && $gti -lt $gmi ]] && return 1
+        return 0
+      }
+
+      _kport_gpu_family_check x86_gpu_order    || return 1
+      _kport_gpu_family_check mali_gpu_order   || return 1
+      _kport_gpu_family_check adreno_gpu_order || return 1
+      _kport_gpu_family_check pvr_gpu_order    || return 1
     fi
   fi
 
