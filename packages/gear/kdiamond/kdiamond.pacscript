@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kdiamond-26.04.1.tar.xz"
 )
 sha256sums=(
-  "894329bf72ad3cb1872cd50549586654c75945b3f025d9dd6819ed4057a49ce0"   # replace with actual sha256 after download
+  "894329bf72ad3cb1872cd50549586654c75945b3f025d9dd6819ed4057a49ce0"
 )
 
 depends=(

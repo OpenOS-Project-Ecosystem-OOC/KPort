@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/akonadi-calendar-tools-26.04.1.tar.xz"
 )
 sha256sums=(
-  "88a60428f31015ed0911a643cb9120ad2687db7e64ec160f9df631a6249eccb5"   # replace with actual sha256 after download
+  "88a60428f31015ed0911a643cb9120ad2687db7e64ec160f9df631a6249eccb5"
 )
 
 depends=(

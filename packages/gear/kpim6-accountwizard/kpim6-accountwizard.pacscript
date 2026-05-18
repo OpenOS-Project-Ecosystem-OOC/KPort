@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/akonadi-import-wizard-26.04.1.tar.xz"
 )
 sha256sums=(
-  "7a4b44ced24cea5c7666b47250f259ff330ed491225d2974acb938cb0f7d5680"   # replace with actual sha256 after download
+  "7a4b44ced24cea5c7666b47250f259ff330ed491225d2974acb938cb0f7d5680"
 )
 
 depends=(

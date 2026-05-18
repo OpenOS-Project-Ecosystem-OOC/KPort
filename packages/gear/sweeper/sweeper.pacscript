@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/sweeper-26.04.1.tar.xz"
 )
 sha256sums=(
-  "1a88b0da5db8d7f5b8c704b3afcf04b27f1287b32fafa596fcae78cc6cfc95b4"   # replace with actual sha256 after download
+  "1a88b0da5db8d7f5b8c704b3afcf04b27f1287b32fafa596fcae78cc6cfc95b4"
 )
 
 depends=(

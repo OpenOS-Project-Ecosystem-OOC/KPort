@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kdesdk-thumbnailers-26.04.1.tar.xz"
 )
 sha256sums=(
-  "93cbf70db3f4ff6f48598b0ecf82eddfb0087e00a92be78b5619c8b6489077a6"   # replace with actual sha256 after download
+  "93cbf70db3f4ff6f48598b0ecf82eddfb0087e00a92be78b5619c8b6489077a6"
 )
 
 depends=(

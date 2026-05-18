@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/bomber-26.04.1.tar.xz"
 )
 sha256sums=(
-  "3eaa234b497f1126ebf41b4ceeddbcda7d13d337c2f6e5d6680beb46df77906d"   # replace with actual sha256 after download
+  "3eaa234b497f1126ebf41b4ceeddbcda7d13d337c2f6e5d6680beb46df77906d"
 )
 
 depends=(

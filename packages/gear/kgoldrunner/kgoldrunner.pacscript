@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kgoldrunner-26.04.1.tar.xz"
 )
 sha256sums=(
-  "b4d6cf745c797900eca3b78f2ff3abb0b743247fb7230bc86704e878cd9ffcb4"   # replace with actual sha256 after download
+  "b4d6cf745c797900eca3b78f2ff3abb0b743247fb7230bc86704e878cd9ffcb4"
 )
 
 depends=(

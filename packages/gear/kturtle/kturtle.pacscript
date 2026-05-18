@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kturtle-26.04.1.tar.xz"
 )
 sha256sums=(
-  "6fd5bc11e872ea0deaa59ceb762bf550f31b396e49b515c231230c0f13e71183"   # replace with actual sha256 after download
+  "6fd5bc11e872ea0deaa59ceb762bf550f31b396e49b515c231230c0f13e71183"
 )
 
 depends=(

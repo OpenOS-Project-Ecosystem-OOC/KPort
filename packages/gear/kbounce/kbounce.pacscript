@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kbounce-26.04.1.tar.xz"
 )
 sha256sums=(
-  "ecb9af6e8975719c3937c537299c27bdeae50e7fab554449800d04a14fe9cdb6"   # replace with actual sha256 after download
+  "ecb9af6e8975719c3937c537299c27bdeae50e7fab554449800d04a14fe9cdb6"
 )
 
 depends=(

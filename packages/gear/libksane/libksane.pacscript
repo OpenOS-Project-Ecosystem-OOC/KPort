@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/libksane-26.04.1.tar.xz"
 )
 sha256sums=(
-  "8d78335f78f35872afab3b206244235518b754dd2a2fcd528e716ea0df1fee1d"   # replace with actual sha256 after download
+  "8d78335f78f35872afab3b206244235518b754dd2a2fcd528e716ea0df1fee1d"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/ktouch-26.04.1.tar.xz"
 )
 sha256sums=(
-  "fe93fba18f4c1c01a019a0c462ee890462a92da402c2a138528a08e9d1dda241"   # replace with actual sha256 after download
+  "fe93fba18f4c1c01a019a0c462ee890462a92da402c2a138528a08e9d1dda241"
 )
 
 depends=(

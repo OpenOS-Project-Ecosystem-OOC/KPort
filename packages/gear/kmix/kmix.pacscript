@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kmix-26.04.1.tar.xz"
 )
 sha256sums=(
-  "6aef7735b69ab8b83595b6b369a64db8ee42dc1165444413291ba2f3243d2ceb"   # replace with actual sha256 after download
+  "6aef7735b69ab8b83595b6b369a64db8ee42dc1165444413291ba2f3243d2ceb"
 )
 
 depends=(

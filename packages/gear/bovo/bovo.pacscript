@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/bovo-26.04.1.tar.xz"
 )
 sha256sums=(
-  "e55b788547ed250e417282d883d9d13246c8f475016f20c03f0ed2d6a58a2482"   # replace with actual sha256 after download
+  "e55b788547ed250e417282d883d9d13246c8f475016f20c03f0ed2d6a58a2482"
 )
 
 depends=(

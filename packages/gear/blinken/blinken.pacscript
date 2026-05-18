@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/blinken-26.04.1.tar.xz"
 )
 sha256sums=(
-  "d098f0788177da717c57ae63793f3bb11e20ee287d788efeb8caa5a885864c4f"   # replace with actual sha256 after download
+  "d098f0788177da717c57ae63793f3bb11e20ee287d788efeb8caa5a885864c4f"
 )
 
 depends=(

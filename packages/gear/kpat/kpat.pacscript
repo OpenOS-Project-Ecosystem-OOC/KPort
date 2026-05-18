@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kpat-26.04.1.tar.xz"
 )
 sha256sums=(
-  "35a95123cc98563970f854a73acf063c139670f592bd0076d997230c4c86b27a"   # replace with actual sha256 after download
+  "35a95123cc98563970f854a73acf063c139670f592bd0076d997230c4c86b27a"
 )
 
 depends=(

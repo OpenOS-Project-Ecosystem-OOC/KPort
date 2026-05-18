@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/konqueror-26.04.1.tar.xz"
 )
 sha256sums=(
-  "0049726058e323d46fd1eb6271b30cae6289d828baa4508db60ab0b2f477a4f9"   # replace with actual sha256 after download
+  "0049726058e323d46fd1eb6271b30cae6289d828baa4508db60ab0b2f477a4f9"
 )
 
 depends=(

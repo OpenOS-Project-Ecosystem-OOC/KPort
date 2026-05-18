@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/ktimer-26.04.1.tar.xz"
 )
 sha256sums=(
-  "b5ff52031486599e5e5abb2a8fc542121563a5942f3cebbcd0340be4d42e2b9c"   # replace with actual sha256 after download
+  "b5ff52031486599e5e5abb2a8fc542121563a5942f3cebbcd0340be4d42e2b9c"
 )
 
 depends=(

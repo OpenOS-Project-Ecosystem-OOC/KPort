@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/ktrip-26.04.1.tar.xz"
 )
 sha256sums=(
-  "80a51468c09c21b11c083d43afb695655c59ba0c4ebd996f48330b0cbaf2724c"   # replace with actual sha256 after download
+  "80a51468c09c21b11c083d43afb695655c59ba0c4ebd996f48330b0cbaf2724c"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/dolphin-26.04.1.tar.xz"
 )
 sha256sums=(
-  "ba4da5192f7e45f392feaa74dfb18fddddcf9dbcc8f9abeb3f670e83ed9e4f57"   # replace with actual sha256 after download
+  "ba4da5192f7e45f392feaa74dfb18fddddcf9dbcc8f9abeb3f670e83ed9e4f57"
 )
 
 depends=(

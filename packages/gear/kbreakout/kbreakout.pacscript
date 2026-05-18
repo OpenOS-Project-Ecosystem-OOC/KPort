@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kbreakout-26.04.1.tar.xz"
 )
 sha256sums=(
-  "0167299af94300f2c528dfef5ab1f03939b61ce77f916f1183b6be27ac6bc6d6"   # replace with actual sha256 after download
+  "0167299af94300f2c528dfef5ab1f03939b61ce77f916f1183b6be27ac6bc6d6"
 )
 
 depends=(

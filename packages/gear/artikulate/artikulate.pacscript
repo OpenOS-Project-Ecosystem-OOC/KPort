@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/artikulate-26.04.1.tar.xz"
 )
 sha256sums=(
-  "f0fc2365104c0bf88b1098aa179b6d0c4cd2e459124a9802a276badcf99d3ab6"   # replace with actual sha256 after download
+  "f0fc2365104c0bf88b1098aa179b6d0c4cd2e459124a9802a276badcf99d3ab6"
 )
 
 depends=(

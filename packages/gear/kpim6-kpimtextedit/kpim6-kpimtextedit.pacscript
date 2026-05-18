@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kpimtextedit-26.04.1.tar.xz"
 )
 sha256sums=(
-  "2670cc61039c82b3e19ec36686cfa73ac81f19ae18f4cf885a0ace4b3df80582"   # replace with actual sha256 after download
+  "2670cc61039c82b3e19ec36686cfa73ac81f19ae18f4cf885a0ace4b3df80582"
 )
 
 depends=(

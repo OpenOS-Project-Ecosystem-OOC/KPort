@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/pimcommon-26.04.1.tar.xz"
 )
 sha256sums=(
-  "7fd2097766d8d087ad02b2e200c88899150a092cd5ee450d4c6df2be5678126d"   # replace with actual sha256 after download
+  "7fd2097766d8d087ad02b2e200c88899150a092cd5ee450d4c6df2be5678126d"
 )
 
 depends=(

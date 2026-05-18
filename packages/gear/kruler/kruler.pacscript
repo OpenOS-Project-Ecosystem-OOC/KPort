@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kruler-26.04.1.tar.xz"
 )
 sha256sums=(
-  "dcf9aaaf349950bd2f8339653c50c05166da74a19bb92de8f2a8e4e27eb2ebfb"   # replace with actual sha256 after download
+  "dcf9aaaf349950bd2f8339653c50c05166da74a19bb92de8f2a8e4e27eb2ebfb"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/libkdepim-26.04.1.tar.xz"
 )
 sha256sums=(
-  "060a4a83b443bac86254d4bac2e34e08c2727a12a7343c01a28c684993f2e052"   # replace with actual sha256 after download
+  "060a4a83b443bac86254d4bac2e34e08c2727a12a7343c01a28c684993f2e052"
 )
 
 depends=(

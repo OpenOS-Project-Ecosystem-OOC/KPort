@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kleopatra-26.04.1.tar.xz"
 )
 sha256sums=(
-  "3bf1ff1e9aacc0b8c8d11272100b6195bf7e44d7bd3e98adcde90352c469545d"   # replace with actual sha256 after download
+  "3bf1ff1e9aacc0b8c8d11272100b6195bf7e44d7bd3e98adcde90352c469545d"
 )
 
 depends=(

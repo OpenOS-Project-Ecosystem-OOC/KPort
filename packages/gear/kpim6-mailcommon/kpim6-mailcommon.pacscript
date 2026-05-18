@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/mailcommon-26.04.1.tar.xz"
 )
 sha256sums=(
-  "fa7c24f54f185cad3c3a23131f2cf14bdc4df2e24247bec75dbd1b9a6a62589a"   # replace with actual sha256 after download
+  "fa7c24f54f185cad3c3a23131f2cf14bdc4df2e24247bec75dbd1b9a6a62589a"
 )
 
 depends=(

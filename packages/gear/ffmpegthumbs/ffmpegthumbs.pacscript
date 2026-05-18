@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/ffmpegthumbs-26.04.1.tar.xz"
 )
 sha256sums=(
-  "df38f6782f02f4a941c25bee7edee22f48865109e27419c599b71d155a57f4fe"   # replace with actual sha256 after download
+  "df38f6782f02f4a941c25bee7edee22f48865109e27419c599b71d155a57f4fe"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/akonadi-contacts-26.04.1.tar.xz"
 )
 sha256sums=(
-  "e63ba2740584e6620e9175b4477ad68f5cbe0aa369580e208b4502c2c3daa120"   # replace with actual sha256 after download
+  "e63ba2740584e6620e9175b4477ad68f5cbe0aa369580e208b4502c2c3daa120"
 )
 
 depends=(

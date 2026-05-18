@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kcachegrind-26.04.1.tar.xz"
 )
 sha256sums=(
-  "7b35afb0a796e7d54c1fb06940b58de60aa8eeb7badec6a14eb848add7072dcf"   # replace with actual sha256 after download
+  "7b35afb0a796e7d54c1fb06940b58de60aa8eeb7badec6a14eb848add7072dcf"
 )
 
 depends=(

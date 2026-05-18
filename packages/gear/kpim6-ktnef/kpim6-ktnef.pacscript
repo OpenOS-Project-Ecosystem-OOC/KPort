@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/ktnef-26.04.1.tar.xz"
 )
 sha256sums=(
-  "1b5bd61c549ea306730ff6f7d2de43e0738b0d180a0b63148339b7df40225b2b"   # replace with actual sha256 after download
+  "1b5bd61c549ea306730ff6f7d2de43e0738b0d180a0b63148339b7df40225b2b"
 )
 
 depends=(

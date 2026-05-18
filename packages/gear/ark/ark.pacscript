@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/ark-26.04.1.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "e355434eb5d50499902cdb2a7120f5d5299feedaaad5f49d629436e55a668c71"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/svgpart-26.04.1.tar.xz"
 )
 sha256sums=(
-  "a2accc400f0251d0be462b0d1d99cf2ba1bfb99ebf019b03dd2d60de9e152513"   # replace with actual sha256 after download
+  "a2accc400f0251d0be462b0d1d99cf2ba1bfb99ebf019b03dd2d60de9e152513"
 )
 
 depends=(

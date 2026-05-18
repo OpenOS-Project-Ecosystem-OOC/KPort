@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kblackbox-26.04.1.tar.xz"
 )
 sha256sums=(
-  "ec06fa259dee2e18eab3116d890c186df2db9c459dc8c1eb3116a2c362d62b7f"   # replace with actual sha256 after download
+  "ec06fa259dee2e18eab3116d890c186df2db9c459dc8c1eb3116a2c362d62b7f"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/picmi-26.04.1.tar.xz"
 )
 sha256sums=(
-  "723f6fc0f3ea4bf59f2955b46eb25062864b7e5bb9824f995a5f6fc4495be650"   # replace with actual sha256 after download
+  "723f6fc0f3ea4bf59f2955b46eb25062864b7e5bb9824f995a5f6fc4495be650"
 )
 
 depends=(

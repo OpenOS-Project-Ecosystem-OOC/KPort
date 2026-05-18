@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kapman-26.04.1.tar.xz"
 )
 sha256sums=(
-  "2137c5eaf010ff9435e8d75768e5c1808f944933353d1e9304343f18bc91beaf"   # replace with actual sha256 after download
+  "2137c5eaf010ff9435e8d75768e5c1808f944933353d1e9304343f18bc91beaf"
 )
 
 depends=(

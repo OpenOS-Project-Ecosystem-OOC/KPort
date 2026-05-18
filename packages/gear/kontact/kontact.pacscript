@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kontact-26.04.1.tar.xz"
 )
 sha256sums=(
-  "f137ddc84dfb2759621f7d6d63ca60879f40f6c2ffae3d206e2e80f2e9bd4743"   # replace with actual sha256 after download
+  "f137ddc84dfb2759621f7d6d63ca60879f40f6c2ffae3d206e2e80f2e9bd4743"
 )
 
 depends=(

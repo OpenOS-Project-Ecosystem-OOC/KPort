@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/grantleetheme-26.04.1.tar.xz"
 )
 sha256sums=(
-  "d65447ad8192bcfad3ba5c849707edc29f72d83f68a025c205cf28fd8c25fd4f"   # replace with actual sha256 after download
+  "d65447ad8192bcfad3ba5c849707edc29f72d83f68a025c205cf28fd8c25fd4f"
 )
 
 depends=(

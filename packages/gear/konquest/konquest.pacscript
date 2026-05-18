@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/konquest-26.04.1.tar.xz"
 )
 sha256sums=(
-  "b9b683c177e1d0da1ec966281800970ada1efb84cc3d7d3405cba5d88fa1c8aa"   # replace with actual sha256 after download
+  "b9b683c177e1d0da1ec966281800970ada1efb84cc3d7d3405cba5d88fa1c8aa"
 )
 
 depends=(

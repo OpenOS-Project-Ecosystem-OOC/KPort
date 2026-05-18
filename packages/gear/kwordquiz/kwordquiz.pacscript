@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kwordquiz-26.04.1.tar.xz"
 )
 sha256sums=(
-  "e0e802a78ac5f410d3c16cdcd4f2fddbce26b40c6e2b9525aa324a1e7aa45dc9"   # replace with actual sha256 after download
+  "e0e802a78ac5f410d3c16cdcd4f2fddbce26b40c6e2b9525aa324a1e7aa45dc9"
 )
 
 depends=(

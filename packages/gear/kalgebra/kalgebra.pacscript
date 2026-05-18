@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kalgebra-26.04.1.tar.xz"
 )
 sha256sums=(
-  "93c14ef59da1369c924c135b9dfec8ff22cee41e6994ea073ff45c50a073222f"   # replace with actual sha256 after download
+  "93c14ef59da1369c924c135b9dfec8ff22cee41e6994ea073ff45c50a073222f"
 )
 
 depends=(

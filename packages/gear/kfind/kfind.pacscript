@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kfind-26.04.1.tar.xz"
 )
 sha256sums=(
-  "f26fccc4652e593dcc70d688f042a4975193b955362ff7c2144208cb1130980d"   # replace with actual sha256 after download
+  "f26fccc4652e593dcc70d688f042a4975193b955362ff7c2144208cb1130980d"
 )
 
 depends=(

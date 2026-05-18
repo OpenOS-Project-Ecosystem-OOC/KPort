@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/audiocd-kio-26.04.1.tar.xz"
 )
 sha256sums=(
-  "c98f6499f8d196bd87151056c431f212615eda800a17b79d2d14e86ef3029810"   # replace with actual sha256 after download
+  "c98f6499f8d196bd87151056c431f212615eda800a17b79d2d14e86ef3029810"
 )
 
 depends=(

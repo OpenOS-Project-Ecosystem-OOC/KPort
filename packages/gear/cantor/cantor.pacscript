@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/cantor-26.04.1.tar.xz"
 )
 sha256sums=(
-  "ce835577baaad9acf438fefd69ffd8da406d9c3f148abee467270f6d8cf96670"   # replace with actual sha256 after download
+  "ce835577baaad9acf438fefd69ffd8da406d9c3f148abee467270f6d8cf96670"
 )
 
 depends=(

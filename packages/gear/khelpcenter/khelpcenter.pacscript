@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/khelpcenter-26.04.1.tar.xz"
 )
 sha256sums=(
-  "65cd38bdf03a37972b3b5820da125a301505200299770fc9dc5bc57143295b17"   # replace with actual sha256 after download
+  "65cd38bdf03a37972b3b5820da125a301505200299770fc9dc5bc57143295b17"
 )
 
 depends=(

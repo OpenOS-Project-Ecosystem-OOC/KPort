@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kimap-26.04.1.tar.xz"
 )
 sha256sums=(
-  "37bc4c934b3f1bd48c661c70a11a1c72c8cf5a859a7860566eeeda789d9075a8"   # replace with actual sha256 after download
+  "37bc4c934b3f1bd48c661c70a11a1c72c8cf5a859a7860566eeeda789d9075a8"
 )
 
 depends=(

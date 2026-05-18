@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/konsole-26.04.1.tar.xz"
 )
 sha256sums=(
-  "4c59dabc4b64201c61458e8997a66d1aa7dc98b181e5e85f3c0f5cb69066d963"   # replace with actual sha256 after download
+  "4c59dabc4b64201c61458e8997a66d1aa7dc98b181e5e85f3c0f5cb69066d963"
 )
 
 depends=(

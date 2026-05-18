@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kdenetwork-filesharing-26.04.1.tar.xz"
 )
 sha256sums=(
-  "76665219c66ba71137f00634036427028903cc146226d3d2c933aac3d232e757"   # replace with actual sha256 after download
+  "76665219c66ba71137f00634036427028903cc146226d3d2c933aac3d232e757"
 )
 
 depends=(

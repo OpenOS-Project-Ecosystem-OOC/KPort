@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/keditbookmarks-26.04.1.tar.xz"
 )
 sha256sums=(
-  "610b94d538894a49961927deb96b083f55b56000c174adf83b6330587d50605a"   # replace with actual sha256 after download
+  "610b94d538894a49961927deb96b083f55b56000c174adf83b6330587d50605a"
 )
 
 depends=(

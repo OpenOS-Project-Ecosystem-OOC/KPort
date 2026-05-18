@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/ksirk-26.04.1.tar.xz"
 )
 sha256sums=(
-  "3a8d7c02e2f5efcdfb0cacd3f027dc49caf97ac8a7103852110d9fcf20b9d073"   # replace with actual sha256 after download
+  "3a8d7c02e2f5efcdfb0cacd3f027dc49caf97ac8a7103852110d9fcf20b9d073"
 )
 
 depends=(

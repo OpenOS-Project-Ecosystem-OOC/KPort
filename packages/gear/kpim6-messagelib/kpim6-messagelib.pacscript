@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/messagelib-26.04.1.tar.xz"
 )
 sha256sums=(
-  "3b00a06032995097f84cb1b56efb9778fc35bf94fbd6a4ea2f7999e5cc663c6c"   # replace with actual sha256 after download
+  "3b00a06032995097f84cb1b56efb9778fc35bf94fbd6a4ea2f7999e5cc663c6c"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/incidenceeditor-26.04.1.tar.xz"
 )
 sha256sums=(
-  "401b2152aba9318c49c42022f32a9ea2c592da5db3f11c50ae93d319f53bd94c"   # replace with actual sha256 after download
+  "401b2152aba9318c49c42022f32a9ea2c592da5db3f11c50ae93d319f53bd94c"
 )
 
 depends=(

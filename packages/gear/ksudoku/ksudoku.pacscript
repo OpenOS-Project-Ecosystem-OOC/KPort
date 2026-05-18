@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/ksudoku-26.04.1.tar.xz"
 )
 sha256sums=(
-  "5e3f2faf86e59dd78259ac37f3b7451b3fccd56db5bcc2315c85a087c62c5a42"   # replace with actual sha256 after download
+  "5e3f2faf86e59dd78259ac37f3b7451b3fccd56db5bcc2315c85a087c62c5a42"
 )
 
 depends=(

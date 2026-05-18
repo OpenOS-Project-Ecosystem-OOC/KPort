@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/filelight-26.04.1.tar.xz"
 )
 sha256sums=(
-  "4661cc46e4f89ccc6ac130c9c3be2eeed0598781a80ddda428c6dedcf49f8c03"   # replace with actual sha256 after download
+  "4661cc46e4f89ccc6ac130c9c3be2eeed0598781a80ddda428c6dedcf49f8c03"
 )
 
 depends=(

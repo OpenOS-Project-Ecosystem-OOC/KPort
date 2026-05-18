@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/libkexiv2-26.04.1.tar.xz"
 )
 sha256sums=(
-  "7827c710db4b63d059a0721b6a2a833663d0c457bf4219eb8dfc1c98b19c93e5"   # replace with actual sha256 after download
+  "7827c710db4b63d059a0721b6a2a833663d0c457bf4219eb8dfc1c98b19c93e5"
 )
 
 depends=(

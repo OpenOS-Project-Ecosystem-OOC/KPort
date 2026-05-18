@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kmailtransport-26.04.1.tar.xz"
 )
 sha256sums=(
-  "c906f54252fa8005f3f1a80fb1d81b98b0a837631348ffd77d125310d0079f44"   # replace with actual sha256 after download
+  "c906f54252fa8005f3f1a80fb1d81b98b0a837631348ffd77d125310d0079f44"
 )
 
 depends=(

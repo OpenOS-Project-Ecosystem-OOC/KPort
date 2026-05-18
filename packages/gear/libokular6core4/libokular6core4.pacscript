@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/okular-26.04.1.tar.xz"
 )
 sha256sums=(
-  "3d87a0d9e9fe62435a913190a0a7edd75bec6a02ce2eda4089046adcffc6bba6"   # replace with actual sha256 after download
+  "3d87a0d9e9fe62435a913190a0a7edd75bec6a02ce2eda4089046adcffc6bba6"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/signon-kwallet-extension-26.04.1.tar.xz"
 )
 sha256sums=(
-  "e318dea68ea0da89a533dce32afa07374c68c161f5d601480522cc0d0ee8fceb"   # replace with actual sha256 after download
+  "e318dea68ea0da89a533dce32afa07374c68c161f5d601480522cc0d0ee8fceb"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kdegraphics-mobipocket-26.04.1.tar.xz"
 )
 sha256sums=(
-  "de353837314402f4983893226483a88a9026266b53ddf64b07ef234d149ff7bd"   # replace with actual sha256 after download
+  "de353837314402f4983893226483a88a9026266b53ddf64b07ef234d149ff7bd"
 )
 
 depends=(

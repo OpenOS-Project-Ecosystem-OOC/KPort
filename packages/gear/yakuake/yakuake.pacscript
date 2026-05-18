@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/yakuake-26.04.1.tar.xz"
 )
 sha256sums=(
-  "1aa75d75169ae74c806c9db056cc3df32b1586ab6c6d78344e82411386efa457"   # replace with actual sha256 after download
+  "1aa75d75169ae74c806c9db056cc3df32b1586ab6c6d78344e82411386efa457"
 )
 
 depends=(

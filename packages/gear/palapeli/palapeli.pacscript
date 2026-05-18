@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/palapeli-26.04.1.tar.xz"
 )
 sha256sums=(
-  "1854dcbfc038db8f95ec9736a769557e12b3542729067e0793297f1cf82d0c74"   # replace with actual sha256 after download
+  "1854dcbfc038db8f95ec9736a769557e12b3542729067e0793297f1cf82d0c74"
 )
 
 depends=(

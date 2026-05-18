@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kate-26.04.1.tar.xz"
 )
 sha256sums=(
-  "74cce1dc7f488a6e1f0a4412abe5bc42edb4506b418c2f940b7ed11258022198"   # replace with actual sha256 after download
+  "74cce1dc7f488a6e1f0a4412abe5bc42edb4506b418c2f940b7ed11258022198"
 )
 
 depends=(

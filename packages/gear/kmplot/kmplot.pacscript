@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kmplot-26.04.1.tar.xz"
 )
 sha256sums=(
-  "7ad14161a0de03b52c322c455ff012f41e6f4465006ab90e544d4f1b3a322bd1"   # replace with actual sha256 after download
+  "7ad14161a0de03b52c322c455ff012f41e6f4465006ab90e544d4f1b3a322bd1"
 )
 
 depends=(

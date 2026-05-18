@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/spectacle-6.6.5.tar.xz"
 )
 sha256sums=(
-  "a37df7731a6bc89bc23ac08ad1f995ce9f1efb330f3ebad9bf926dca6ebb5fc7"   # replace with actual sha256 after download
+  "a37df7731a6bc89bc23ac08ad1f995ce9f1efb330f3ebad9bf926dca6ebb5fc7"
 )
 
 depends=(

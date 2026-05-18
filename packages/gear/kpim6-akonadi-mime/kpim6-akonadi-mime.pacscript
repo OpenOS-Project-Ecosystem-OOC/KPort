@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/akonadi-mime-26.04.1.tar.xz"
 )
 sha256sums=(
-  "5d5cbe14a218101d364fd483db16f163240f7b6e02c78c7245c8d1d5752219be"   # replace with actual sha256 after download
+  "5d5cbe14a218101d364fd483db16f163240f7b6e02c78c7245c8d1d5752219be"
 )
 
 depends=(

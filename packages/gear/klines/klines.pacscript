@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/klines-26.04.1.tar.xz"
 )
 sha256sums=(
-  "65531992a11e085316a1f1dc1d61299122e4b335c7238bbdf701b4e2097a70a4"   # replace with actual sha256 after download
+  "65531992a11e085316a1f1dc1d61299122e4b335c7238bbdf701b4e2097a70a4"
 )
 
 depends=(

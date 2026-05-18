@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kimagemapeditor-26.04.1.tar.xz"
 )
 sha256sums=(
-  "861d233710e333b86310016a2d5e06bdc77e435874daa0229dc3223009863ad8"   # replace with actual sha256 after download
+  "861d233710e333b86310016a2d5e06bdc77e435874daa0229dc3223009863ad8"
 )
 
 depends=(

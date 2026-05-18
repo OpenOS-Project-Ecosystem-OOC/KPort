@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/knavalbattle-26.04.1.tar.xz"
 )
 sha256sums=(
-  "7ddbc70d586c985cf385f9beb1807b60bbbd730589b176ced4087a155e9f446b"   # replace with actual sha256 after download
+  "7ddbc70d586c985cf385f9beb1807b60bbbd730589b176ced4087a155e9f446b"
 )
 
 depends=(

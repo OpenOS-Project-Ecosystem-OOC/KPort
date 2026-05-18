@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kcalutils-26.04.1.tar.xz"
 )
 sha256sums=(
-  "bf5492583f4e56f7c1a98e32315e50def4df01daa5b5de12812d85150c7c7725"   # replace with actual sha256 after download
+  "bf5492583f4e56f7c1a98e32315e50def4df01daa5b5de12812d85150c7c7725"
 )
 
 depends=(

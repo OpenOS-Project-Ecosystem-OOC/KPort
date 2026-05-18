@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/korganizer-26.04.1.tar.xz"
 )
 sha256sums=(
-  "1b92e8ede6ee9a6c046032da75d00873d2584b0db274331e064414340fc9dadb"   # replace with actual sha256 after download
+  "1b92e8ede6ee9a6c046032da75d00873d2584b0db274331e064414340fc9dadb"
 )
 
 depends=(

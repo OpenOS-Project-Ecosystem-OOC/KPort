@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/mailimporter-26.04.1.tar.xz"
 )
 sha256sums=(
-  "ee560abce2791a2e79e0de1865d5dc193789ce1fdf021c2c6917e32854d1123d"   # replace with actual sha256 after download
+  "ee560abce2791a2e79e0de1865d5dc193789ce1fdf021c2c6917e32854d1123d"
 )
 
 depends=(

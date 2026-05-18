@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kblocks-26.04.1.tar.xz"
 )
 sha256sums=(
-  "7edb48eabc6f0c5c76a12817295f16144eace472ea5aa7e820267c8b23e743de"   # replace with actual sha256 after download
+  "7edb48eabc6f0c5c76a12817295f16144eace472ea5aa7e820267c8b23e743de"
 )
 
 depends=(

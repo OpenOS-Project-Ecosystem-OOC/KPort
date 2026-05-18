@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kamoso-26.04.1.tar.xz"
 )
 sha256sums=(
-  "b73acd2dcb44d89c9db67b609f0e130e4b2afba9e1702d8d7b49441879326705"   # replace with actual sha256 after download
+  "b73acd2dcb44d89c9db67b609f0e130e4b2afba9e1702d8d7b49441879326705"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kbruch-26.04.1.tar.xz"
 )
 sha256sums=(
-  "82a592d6eb42e19d588844af131a3b6a4ec179656d48f91ae26d70ffe2205dab"   # replace with actual sha256 after download
+  "82a592d6eb42e19d588844af131a3b6a4ec179656d48f91ae26d70ffe2205dab"
 )
 
 depends=(

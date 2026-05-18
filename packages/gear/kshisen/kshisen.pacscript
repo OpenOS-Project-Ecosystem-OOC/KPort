@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kshisen-26.04.1.tar.xz"
 )
 sha256sums=(
-  "9aad3554a5da1259dfdb44b404b490fba40f47a79e34cc7425523ef2975b9ddb"   # replace with actual sha256 after download
+  "9aad3554a5da1259dfdb44b404b490fba40f47a79e34cc7425523ef2975b9ddb"
 )
 
 depends=(

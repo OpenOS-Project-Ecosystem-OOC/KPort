@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/libkleo-26.04.1.tar.xz"
 )
 sha256sums=(
-  "6346fef90598d21034edaabe3221d6aba5e2fbc358eeb757d84c97357d2ccedc"   # replace with actual sha256 after download
+  "6346fef90598d21034edaabe3221d6aba5e2fbc358eeb757d84c97357d2ccedc"
 )
 
 depends=(

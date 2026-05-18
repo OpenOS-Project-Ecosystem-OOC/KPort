@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/itinerary-26.04.1.tar.xz"
 )
 sha256sums=(
-  "ecb680a1eafd70f923ca8ba7fba44e480bbaef6721299d3cda0ffcce2dd19c83"   # replace with actual sha256 after download
+  "ecb680a1eafd70f923ca8ba7fba44e480bbaef6721299d3cda0ffcce2dd19c83"
 )
 
 depends=(

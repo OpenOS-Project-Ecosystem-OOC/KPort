@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/kitinerary-26.04.1.tar.xz"
 )
 sha256sums=(
-  "5d1adc66de813d369730ee20bc8bec83af84e41075aea71f22fa200247b752ad"   # replace with actual sha256 after download
+  "5d1adc66de813d369730ee20bc8bec83af84e41075aea71f22fa200247b752ad"
 )
 
 depends=(

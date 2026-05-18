@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/khangman-26.04.1.tar.xz"
 )
 sha256sums=(
-  "99618ea09efb081f230bd510af22aade1774623bf2166d69663b3b11c1aa5747"   # replace with actual sha256 after download
+  "99618ea09efb081f230bd510af22aade1774623bf2166d69663b3b11c1aa5747"
 )
 
 depends=(

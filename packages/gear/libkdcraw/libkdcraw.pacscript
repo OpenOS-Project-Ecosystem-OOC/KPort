@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/release-service/26.04.1/src/libkdcraw-26.04.1.tar.xz"
 )
 sha256sums=(
-  "dc898b7488f84c1e286d47775a0562402c954647dab622719d9f953d90bd9aef"   # replace with actual sha256 after download
+  "dc898b7488f84c1e286d47775a0562402c954647dab622719d9f953d90bd9aef"
 )
 
 depends=(
