@@ -33,3 +33,4 @@ masks:
   # - pkg: plasma/kwin
   #   gpu: [gpu-sw, gpu-gl2]
   #   reason: "KWin 6.x requires OpenGL 4.x minimum"
+

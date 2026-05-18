@@ -51,9 +51,22 @@ done
 
 # ── Resolve install plan ──────────────────────────────────────────────────────
 
-kport_resolve_print_plan "${PACKAGES[@]}" || exit 0
-
+# Resolve once — reuse for both the plan display and the install loop.
 mapfile -t INSTALL_ORDER < <(kport_resolve "${PACKAGES[@]}")
+
+if [[ ${#INSTALL_ORDER[@]} -eq 0 ]]; then
+  kport_info "Nothing to install — all packages already up to date."
+  exit 0
+fi
+
+kport_header "Install plan (${#INSTALL_ORDER[@]} package(s))"
+for _pkg in "${INSTALL_ORDER[@]}"; do
+  _ps=$(kport_find_pacscript "$_pkg") || continue
+  _ver=$(kport_pacscript_var "$_ps" pkgver)
+  _cat=$(kport_pacscript_var "$_ps" KCATEGORY)
+  printf "  ${C_BOLD}%-30s${C_RESET} ${C_DIM}%-12s  %s${C_RESET}\n" "$_pkg" "$_ver" "$_cat"
+done
+unset _pkg _ps _ver _cat
 
 # ── Confirm ───────────────────────────────────────────────────────────────────
 
@@ -182,6 +195,12 @@ for pkgname in "${INSTALL_ORDER[@]}"; do
 
   pkgver=$(kport_pacscript_var "$pacscript" pkgver)
   category=$(kport_pacscript_var "$pacscript" KCATEGORY)
+
+  if kport_is_masked "$pkgname" "$category"; then
+    kport_warn "${pkgname}: masked — skipped"
+    (( failed++ )) || true
+    continue
+  fi
 
   kport_header "Installing ${pkgname} ${pkgver}"
   kport_kv "Category"   "$category"
