@@ -75,10 +75,14 @@ _kport_record_install() {
   kport_db_write "$pkgname" "slot"     "$(kport_pacscript_var "$pacscript" KSLOT)"
   kport_db_write "$pkgname" "category" "$category"
 
-  # Record active USE flags
-  local active_flags
-  active_flags=$(KUSE=() pkgname="$pkgname" KPORT_CONF_DIR="$KPORT_CONF" \
-    bash -c 'source "${KPORT_LIB}/use-helpers.sh" && use_active_flags' 2>/dev/null || true)
+  # Record active USE flags — serialize KUSE array into the subshell body so
+  # bash receives a proper array (env var assignments only set scalars).
+  local active_flags kuse_arr kuse_decl
+  mapfile -t kuse_arr < <(kport_pacscript_array "$pacscript" KUSE)
+  printf -v kuse_decl 'KUSE=(%s)' "$(printf '"%s" ' "${kuse_arr[@]}")"
+  active_flags=$(pkgname="$pkgname" KPORT_CONF_DIR="$KPORT_CONF" \
+    bash -c "${kuse_decl}; source \"\${KPORT_LIB}/use-helpers.sh\" && use_active_flags" 2>/dev/null \
+    | tr '\n' ' ' | sed 's/ $//' || true)
   kport_db_write "$pkgname" "use_flags" "$active_flags"
 
   # Snapshot hardware.conf
@@ -145,9 +149,9 @@ _kport_build_direct() {
   sudo cp -r "${pkgdir}/." / \
     || { kport_error "Install failed (sudo cp)"; return 1; }
 
-  # Record installed files
+  # Record installed files and symlinks
   mkdir -p "${KPORT_DB_INSTALLED}/${pkgname}"
-  find "$pkgdir" -type f | sed "s|^${pkgdir}||" \
+  find "$pkgdir" \( -type f -o -type l \) | sed "s|^${pkgdir}||" \
     > "${KPORT_DB_INSTALLED}/${pkgname}/files"
 
   _kport_record_install "$pkgname" "$pkgver" "$category" "$pacscript"

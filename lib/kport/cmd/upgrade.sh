@@ -68,11 +68,13 @@ for entry in "${world_entries[@]}"; do
   inst_ver=$(kport_db_read "$pkgname" version)
   inst_use=$(kport_db_read "$pkgname" use_flags)
 
-  # Compute current resolved USE flags
+  # Compute current resolved USE flags.
+  # KUSE must be declared inside the subshell — env var assignments on bash -c
+  # only set scalars, not arrays, so we serialize the array into the script body.
   mapfile -t kuse_arr < <(kport_pacscript_array "$pacscript" KUSE)
-  current_use=$(pkgname="$pkgname" KUSE=("${kuse_arr[@]}") \
-    KPORT_CONF_DIR="$KPORT_CONF" \
-    bash -c 'source "${KPORT_LIB}/use-helpers.sh" && use_active_flags' 2>/dev/null \
+  printf -v kuse_decl 'KUSE=(%s)' "$(printf '"%s" ' "${kuse_arr[@]}")"
+  current_use=$(pkgname="$pkgname" KPORT_CONF_DIR="$KPORT_CONF" \
+    bash -c "${kuse_decl}; source \"\${KPORT_LIB}/use-helpers.sh\" && use_active_flags" 2>/dev/null \
     | tr '\n' ' ' | sed 's/ $//')
 
   reason=""
