@@ -158,6 +158,113 @@ dep_map:
   dh-sequence-pkgkde-symbolshelper: "~ignore"
   kde-qdoc-common-dev:       "~ignore"
   pkg-kde-tools-neon:        "~ignore"
+
+  # ── KDE Gear runtime libs (apt) ───────────────────────────────────────────
+  # libanalitza: Cantor/KAlgebra math library (no standalone KPort package)
+  libanalitza9:              "~apt:libanalitza9"
+  libanalitzagui9:           "~apt:libanalitzagui9"
+  libanalitzaplot9:          "~apt:libanalitzaplot9"
+  libanalitzawidgets9:       "~apt:libanalitzawidgets9"
+  # Dolphin VCS plugin library — provided by the dolphin KPort package
+  libdolphinvcs6:            "dolphin"
+  # KDE Edu / games / PIM support libs
+  libkeduvocdocument6:       "~apt:libkeduvocdocument6"
+  libkf6kdegames6-6:         "~apt:libkf6kdegames6-6"
+  libkf6kdegames6private6:   "~apt:libkf6kdegames6private6"
+  libkmahjongg6-6:           "~apt:libkmahjongg6-6"
+  libkgantt6-3:              "~apt:libkgantt6-3"
+  libkpublictransport1:      "~apt:libkpublictransport1"
+  libkimageannotator-qt6-0:  "~apt:libkimageannotator-qt6-0"
+  libkcddb6:                 "~apt:libkcddb6"
+  # Okular backends — provided by the okular KPort package
+  okular-backends:           "okular"
+  # Sane scanning — provided by the libksane KPort package
+  libksanecore:              "libksane"
+  # Signon / online accounts
+  libsignon-extension1:      "~apt:libsignon-extension1"
+  # PackageKit Qt6 bindings
+  libpackagekitqt6:          "~apt:libpackagekitqt6"
+  # Qt Keychain
+  libqt6keychain1:           "~apt:libqt6keychain1"
+  # QCoro async Qt6
+  libqcoro6dbus0t64:         "~apt:libqcoro6dbus0t64"
+  # QML modules (apt)
+  qml6-module-org-kde-kirigamiaddons: "~apt:qml6-module-org-kde-kirigamiaddons"
+  qml6-module-qtwebengine:   "~apt:qml6-module-qtwebengine"
+  qml6-module-sso-onlineaccounts: "~apt:qml6-module-sso-onlineaccounts"
+  qml6-module-qt-labs-platform: "~apt:qml6-module-qt-labs-platform"
+  qml6-module-qtquick-controls: "~apt:qml6-module-qtquick-controls"
+  qml6-module-qtquick-window: "~apt:qml6-module-qtquick-window"
+  qml6-module-qtquick-shapes: "~apt:qml6-module-qtquick-shapes"
+
+  # ── Multimedia / audio / video (apt) ──────────────────────────────────────
+  libasound2t64:             "~apt:libasound2t64"
+  libavcodec60:              "~apt:libavcodec60"
+  libavfilter9:              "~apt:libavfilter9"
+  libavformat60:             "~apt:libavformat60"
+  libavutil58:               "~apt:libavutil58"
+  libswscale7:               "~apt:libswscale7"
+  libcanberra0t64:           "~apt:libcanberra0t64"
+  libcdparanoia0:            "~apt:libcdparanoia0"
+  libflac12t64:              "~apt:libflac12t64"
+  libogg0:                   "~apt:libogg0"
+  libpulse0:                 "~apt:libpulse0"
+  libvorbis0a:               "~apt:libvorbis0a"
+  libvorbisenc2:             "~apt:libvorbisenc2"
+  libgstreamer1.0-0:         "~apt:libgstreamer1.0-0"
+
+  # ── Graphics / image (apt) ────────────────────────────────────────────────
+  libcfitsio10t64:           "~apt:libcfitsio10t64"
+  libexiv2-27:               "~apt:libexiv2-27"
+  libglu1-mesa:              "~apt:libglu1-mesa"
+  libjpeg8:                  "~apt:libjpeg8"
+  libkimageannotator-qt6-0:  "~apt:libkimageannotator-qt6-0"
+  libopengl0:                "~apt:libopengl0"
+  libpng16-16t64:            "~apt:libpng16-16t64"
+  libpoppler-qt6-3t64:       "~apt:libpoppler-qt6-3t64"
+  libpoppler140:             "~apt:libpoppler140"
+  libraw23t64:               "~apt:libraw23t64"
+  libspectre1:               "~apt:libspectre1"
+  libtiff6:                  "~apt:libtiff6"
+  libzxing3:                 "~apt:libzxing3"
+
+  # ── Crypto / security (apt) ───────────────────────────────────────────────
+  libassuan0:                "~apt:libassuan0"
+  libgpg-error0:             "~apt:libgpg-error0"
+  libgpgmepp7:               "~apt:libgpgmepp7"
+  libqgpgmeqt6-15:           "~apt:libqgpgmeqt6-15"
+  libssl3t64:                "~apt:libssl3t64"
+
+  # ── Network / directory (apt) ─────────────────────────────────────────────
+  libetebase0:               "~apt:libetebase0"
+  libldap2:                  "~apt:libldap2"
+  libphonenumber8t64-protobuf32: "~apt:libphonenumber8t64-protobuf32"
+  libsasl2-2:                "~apt:libsasl2-2"
+
+  # ── Scripting / text (apt) ────────────────────────────────────────────────
+  libgettextpo0:             "~apt:libgettextpo0"
+  libglib2.0-0t64:           "~apt:libglib2.0-0t64"
+  libluajit-5.1-2:           "~apt:libluajit-5.1-2"
+  libpython3.12t64:          "~apt:libpython3.12t64"
+  libreadline8t64:           "~apt:libreadline8t64"
+  libxml2:                   "~apt:libxml2"
+  libxslt1.1:                "~apt:libxslt1.1"
+  libxapian30:               "~apt:libxapian30"
+
+  # ── Misc system (apt) ─────────────────────────────────────────────────────
+  libarchive13t64:           "~apt:libarchive13t64"
+  libblack-hole-solver0:     "~apt:libblack-hole-solver0"
+  libblack-hole-solver1:     "~apt:libblack-hole-solver1"
+  libfreecell-solver0:       "~apt:libfreecell-solver0"
+  libqalculate22t64:         "~apt:libqalculate22t64"
+  libwayland-client0:        "~apt:libwayland-client0"
+  libx11-6:                  "~apt:libx11-6"
+  libxcb-randr0:             "~apt:libxcb-randr0"
+  libxcb-xkb1:               "~apt:libxcb-xkb1"
+  libxcb1:                   "~apt:libxcb1"
+  libzip4t64:                "~apt:libzip4t64"
+  pkgconf:                   "~apt:pkgconf"
+  xsltproc:                  "~apt:xsltproc"
   kf6-extra-cmake-modules:   "kf6-extra-cmake-modules"
   # Debian packaging helpers and build profile conditionals — not needed in KPort
   dh-python:                 "~ignore"

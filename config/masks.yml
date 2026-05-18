@@ -21,8 +21,30 @@
 
 masks:
 
-  # Packages requiring Vulkan 1.2 masked on gpu-sw and gpu-gl2
-  # (kport-detect sets GPU_TIER; these are auto-masked at resolve time)
+  # Packages requiring Vulkan 1.2 — masked on gpu-sw and gpu-gl2 tiers.
+  # kport-detect sets GPU_TIER at install time; KGPU_MIN=gpu-vk12 in each
+  # pacscript is the authoritative constraint. These entries make it explicit
+  # and auditable via `kport check`.
+
+  - pkg: qt6/qt6-shadertools
+    gpu: [gpu-sw, gpu-gl2]
+    reason: "Requires Vulkan 1.2 (KGPU_MIN=gpu-vk12)"
+
+  - pkg: qt6/qt6-quick3d
+    gpu: [gpu-sw, gpu-gl2]
+    reason: "Requires Vulkan 1.2 (KGPU_MIN=gpu-vk12)"
+
+  - pkg: qt6/qt6-graphs
+    gpu: [gpu-sw, gpu-gl2]
+    reason: "Requires Vulkan 1.2 (KGPU_MIN=gpu-vk12)"
+
+  - pkg: qt6/qt6-quickeffectmaker
+    gpu: [gpu-sw, gpu-gl2]
+    reason: "Requires Vulkan 1.2 (KGPU_MIN=gpu-vk12)"
+
+  - pkg: qt6/qt6-datavis3d
+    gpu: [gpu-sw, gpu-gl2]
+    reason: "Requires Vulkan 1.2 (KGPU_MIN=gpu-vk12)"
 
   # Example: mask an unstable package
   # - pkg: plasma/kwin
