@@ -52,11 +52,14 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-The repository uses GitHub Actions for continuous integration. The following workflow is defined:
+The repository uses GitHub Actions for continuous integration. Workflows are in `.github/workflows/`.
 
-- **hardware-detect.yml**: Runs hardware detection scripts to verify CPU, GPU, and NPU compatibility layers. Ensures proper configuration for hardware-specific optimizations. No secrets are required for this workflow.
+- **pacscript-ci.yml**: Runs on every push or PR touching `packages/`, `config/dep-map.yml`, `lib/`, `bin/kport`, or `scripts/kport/`. Three jobs:
+  - *Shell syntax check* — `bash -n` on all 24 scripts under `lib/`, `bin/kport`, and `scripts/kport/`
+  - *Lint pacscripts* — validates required fields (`pkgname`, `pkgver`, `sha256sums`, `KSLOT`, `KCATEGORY`), 64-char hex sha256sums, and duplicate `depends`/`makedepends` entries across all pacscripts
+  - *Resolver dry-run* — runs `kport_resolve` on five representative leaf packages (kf6-karchive, dolphin, kleopatra, kwin-wayland, qt6-declarative) and fails on missing KPort deps or circular dependency warnings
 
-All workflows are located in the `.github/workflows` directory.
+- **hardware-detect.yml**: Manual workflow (`workflow_dispatch`) that runs the hardware detection scripts and posts CPU/GPU/NPU tier results as a job summary.
 <!-- AI:end:ci -->
 
 ## Mirror chain
