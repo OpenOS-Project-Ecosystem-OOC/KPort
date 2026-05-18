@@ -1,0 +1,7 @@
+name: community-32bit-plasma5
+description: "KDE Plasma 5.27 LTS for i686 (32-bit x86) — Qt5/KF5 based"
+maintainer: community
+url: ""
+priority: 20
+enabled: false
+auto_sync: false

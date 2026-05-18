@@ -40,6 +40,16 @@ repositories:
     enabled: false
     auto_sync: false
 
+  # KDE Plasma 5.27 LTS for i686. Requires community-32bit (priority 15)
+  # to be enabled alongside it for Qt5/KF5 base libraries.
+  # Validated against Arch Linux 32 extra repository (Plasma 5.27.7).
+  - name: community-32bit-plasma5
+    description: "KDE Plasma 5.27 LTS for i686 (32-bit x86)"
+    url: ""
+    priority: 20
+    enabled: false
+    auto_sync: false
+
   # Example community overlay:
   # - name: kde-git-builds
   #   description: "Bleeding-edge KDE git snapshot builds"
