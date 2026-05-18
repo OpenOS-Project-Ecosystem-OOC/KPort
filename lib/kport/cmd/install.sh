@@ -11,6 +11,7 @@
 #   --no-ask        Install without confirmation prompt
 #   --dry-run       Show what would be installed without doing it
 #   --rebuild       Reinstall even if already installed
+#   --direct        Run build()/package() directly without pacstall (no sandbox)
 #   --use "<flags>" Temporary USE flag overrides for this install only
 #                   Format: "+flag -flag" (space-separated)
 #   --help
@@ -24,6 +25,7 @@ source "${KPORT_LIB}/resolve.sh"
 ASK=true
 DRY_RUN=false
 REBUILD=false
+DIRECT=false
 EXTRA_USE=""
 PACKAGES=()
 
@@ -33,6 +35,7 @@ while [[ $# -gt 0 ]]; do
     --no-ask)   ASK=false;         shift ;;
     --dry-run)  DRY_RUN=true;      shift ;;
     --rebuild)  REBUILD=true;      shift ;;
+    --direct)   DIRECT=true;       shift ;;
     --use)      EXTRA_USE="$2";    shift 2 ;;
     --help|-h)
       sed -n '2,/^$/p' "${BASH_SOURCE[0]}" | grep '^#' | sed 's/^# \?//'
@@ -62,67 +65,6 @@ fi
 if [[ "$ASK" == "true" ]]; then
   kport_confirm "Proceed with installation?" || { kport_info "Aborted."; exit 0; }
 fi
-
-# ── Install each package ──────────────────────────────────────────────────────
-
-ok=0; failed=0
-
-for pkgname in "${INSTALL_ORDER[@]}"; do
-  pacscript=$(kport_find_pacscript "$pkgname") \
-    || { kport_warn "Pacscript not found for ${pkgname} — skipping"; (( failed++ )) || true; continue; }
-
-  pkgver=$(kport_pacscript_var "$pacscript" pkgver)
-  category=$(kport_pacscript_var "$pacscript" KCATEGORY)
-
-  kport_header "Installing ${pkgname} ${pkgver}"
-  kport_kv "Category"   "$category"
-  kport_kv "Pacscript"  "$pacscript"
-  echo ""
-
-  # Build a temporary use.conf overlay for --use overrides
-  local_use_conf=""
-  if [[ -n "$EXTRA_USE" ]]; then
-    local_use_conf=$(mktemp)
-    for flag in $EXTRA_USE; do echo "$flag"; done > "$local_use_conf"
-    kport_info "Temporary USE overrides: ${EXTRA_USE}"
-  fi
-
-  # Set up build environment
-  build_env=(
-    KPORT_ROOT="$KPORT_ROOT"
-    KPORT_LIB_DIR="$KPORT_LIB"
-    KPORT_CONF_DIR="$KPORT_CONF"
-  )
-  [[ -n "$local_use_conf" ]] && build_env+=(KPORT_EXTRA_USE_CONF="$local_use_conf")
-
-  # Execute via pacstall if available, otherwise run build/package directly
-  if command -v pacstall &>/dev/null; then
-    kport_info "Running pacstall install..."
-    if env "${build_env[@]}" pacstall -I "$pacscript"; then
-      kport_info "${C_GREEN}✔${C_RESET} Installed ${pkgname} ${pkgver}"
-      _kport_record_install "$pkgname" "$pkgver" "$category" "$pacscript"
-      (( ok++ )) || true
-    else
-      kport_error "Failed to install ${pkgname}"
-      (( failed++ )) || true
-    fi
-  else
-    # Fallback: source and run build() + package() directly in a temp dir
-    kport_warn "pacstall not found — running build() directly (no pacstall integration)"
-    _kport_build_direct "$pkgname" "$pkgver" "$category" "$pacscript" "${build_env[@]}" \
-      && (( ok++ )) || true \
-      || (( failed++ )) || true
-  fi
-
-  [[ -n "$local_use_conf" ]] && rm -f "$local_use_conf"
-  echo ""
-done
-
-# ── Summary ───────────────────────────────────────────────────────────────────
-
-echo ""
-kport_info "Install complete — succeeded: ${ok}  failed: ${failed}"
-[[ "$failed" -gt 0 ]] && exit 1 || exit 0
 
 # ── Internal helpers ──────────────────────────────────────────────────────────
 
@@ -204,9 +146,74 @@ _kport_build_direct() {
     || { kport_error "Install failed (sudo cp)"; return 1; }
 
   # Record installed files
+  mkdir -p "${KPORT_DB_INSTALLED}/${pkgname}"
   find "$pkgdir" -type f | sed "s|^${pkgdir}||" \
-    > "${KPORT_DB_INSTALLED}/${pkgname}/files" 2>/dev/null || true
+    > "${KPORT_DB_INSTALLED}/${pkgname}/files"
 
   _kport_record_install "$pkgname" "$pkgver" "$category" "$pacscript"
   kport_info "${C_GREEN}✔${C_RESET} Installed ${pkgname} ${pkgver}"
 }
+
+# ── Install each package ──────────────────────────────────────────────────────
+
+ok=0; failed=0
+
+for pkgname in "${INSTALL_ORDER[@]}"; do
+  pacscript=$(kport_find_pacscript "$pkgname") \
+    || { kport_warn "Pacscript not found for ${pkgname} — skipping"; (( failed++ )) || true; continue; }
+
+  pkgver=$(kport_pacscript_var "$pacscript" pkgver)
+  category=$(kport_pacscript_var "$pacscript" KCATEGORY)
+
+  kport_header "Installing ${pkgname} ${pkgver}"
+  kport_kv "Category"   "$category"
+  kport_kv "Pacscript"  "$pacscript"
+  echo ""
+
+  # Build a temporary use.conf overlay for --use overrides
+  local_use_conf=""
+  if [[ -n "$EXTRA_USE" ]]; then
+    local_use_conf=$(mktemp)
+    for flag in $EXTRA_USE; do echo "$flag"; done > "$local_use_conf"
+    kport_info "Temporary USE overrides: ${EXTRA_USE}"
+  fi
+
+  # Set up build environment
+  build_env=(
+    KPORT_ROOT="$KPORT_ROOT"
+    KPORT_LIB_DIR="$KPORT_LIB"
+    KPORT_CONF_DIR="$KPORT_CONF"
+  )
+  [[ -n "$local_use_conf" ]] && build_env+=(KPORT_EXTRA_USE_CONF="$local_use_conf")
+
+  # Execute via pacstall if available and --direct not requested
+  if [[ "$DIRECT" != "true" ]] && command -v pacstall &>/dev/null; then
+    kport_info "Running pacstall install..."
+    if env "${build_env[@]}" pacstall -I "$pacscript"; then
+      kport_info "${C_GREEN}✔${C_RESET} Installed ${pkgname} ${pkgver}"
+      _kport_record_install "$pkgname" "$pkgver" "$category" "$pacscript"
+      (( ok++ )) || true
+    else
+      kport_error "Failed to install ${pkgname} via pacstall"
+      kport_info "Tip: retry with --direct to build without pacstall sandbox"
+      (( failed++ )) || true
+    fi
+  else
+    # Run build() + package() directly in a temp dir (no pacstall sandbox)
+    [[ "$DIRECT" == "true" ]] \
+      && kport_info "Running build() directly (--direct mode)" \
+      || kport_warn "pacstall not found — running build() directly"
+    _kport_build_direct "$pkgname" "$pkgver" "$category" "$pacscript" "${build_env[@]}" \
+      && (( ok++ )) || true \
+      || (( failed++ )) || true
+  fi
+
+  [[ -n "$local_use_conf" ]] && rm -f "$local_use_conf"
+  echo ""
+done
+
+# ── Summary ───────────────────────────────────────────────────────────────────
+
+echo ""
+kport_info "Install complete — succeeded: ${ok}  failed: ${failed}"
+[[ "$failed" -gt 0 ]] && exit 1 || exit 0
