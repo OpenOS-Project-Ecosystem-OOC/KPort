@@ -13,6 +13,9 @@
 #   upgrade             Rebuild world set for changed USE flags or versions
 #   promote <pkg>       Move a generated/ skeleton to packages/ for review
 #   sync                Pull updates for all enabled overlay repositories
+#   check   [pkg...]    Verify installed file manifests against the filesystem
+#   set     <pkg> [+f|-f ...]  Toggle USE flags; --global for global flags
+#   news    [pkg...]    Show git changelog for packages (default: installed)
 #   world               List installed packages
 #
 # Global options:
@@ -130,5 +133,13 @@ export -f kport_find_pacscript kport_pacscript_var kport_pacscript_array \
           kport_is_installed kport_db_read kport_db_write kport_db_remove \
           kport_world_add kport_world_remove kport_hw_read kport_is_masked \
           kport_check_keyword kport_header kport_kv kport_confirm
+
+# Pre-populate overlay cache so dispatched subshells don't re-run python3
+if [[ -d "$KPORT_OVERLAYS_DIR" && -f "${KPORT_CONFIG_DIR}/repositories.yml" ]]; then
+  mapfile -t _KPORT_OVERLAY_NAMES < <(
+    python3 "${KPORT_LIB}/list-overlays.py" "${KPORT_CONFIG_DIR}/repositories.yml" 2>/dev/null
+  )
+  export _KPORT_OVERLAY_NAMES
+fi
 
 exec bash "$CMD_SCRIPT" "${KPORT_CMD_ARGS[@]}"

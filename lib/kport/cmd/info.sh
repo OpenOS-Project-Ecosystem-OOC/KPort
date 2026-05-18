@@ -77,7 +77,29 @@ kport_kv "Slot"         "${slot:-0}"
 kport_kv "Channel"      "${channel:-stable}"
 kport_kv "License"      "${licenses[*]:-unknown}"
 kport_kv "Homepage"     "$url"
-kport_kv "Pacscript"    "$pacscript"
+
+# Overlay source — call out when package comes from an overlay
+if [[ "$pacscript" == *"/overlays/"* ]]; then
+  overlay_name=$(echo "$pacscript" | sed "s|.*overlays/\([^/]*\)/.*|\1|")
+  kport_kv "Source"    "${C_YELLOW}overlay:${overlay_name}${C_RESET}  ${C_DIM}${pacscript}${C_RESET}"
+else
+  kport_kv "Pacscript"  "$pacscript"
+fi
+
+# Mask / keyword status
+echo ""
+if kport_is_masked "$pkgname" "$category"; then
+  echo -e "  ${C_RED}[MASKED]${C_RESET}  package is masked — cannot be installed"
+  echo -e "  ${C_DIM}  unmask: add ${category}/${pkgname} to ~/.config/kport/package.unmask${C_RESET}"
+elif ! kport_check_keyword "$pkgname" "$category" "$pacscript" 2>/dev/null; then
+  _kw_channel=$(kport_pacscript_var "$pacscript" KNEON_CHANNEL)
+  _kw_cpu=$(kport_pacscript_var "$pacscript" KCPU_MIN)
+  _kw_gpu=$(kport_pacscript_var "$pacscript" KGPU_MIN)
+  echo -e "  ${C_YELLOW}[KEYWORD BLOCKED]${C_RESET}  channel=${_kw_channel} cpu_min=${_kw_cpu} gpu_min=${_kw_gpu}"
+  echo -e "  ${C_DIM}  accept: echo '${category}/${pkgname}: stability: [${_kw_channel}]' >> ~/.config/kport/package.accept_keywords${C_RESET}"
+else
+  echo -e "  ${C_GREEN}[AVAILABLE]${C_RESET}"
+fi
 
 echo ""
 kport_kv "CPU min"  "${cpu_min:-x86-64-v1}"

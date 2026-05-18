@@ -73,11 +73,13 @@ PYEOF
 
 _search_from_pacscripts() {
   local search_dirs=()
-  if [[ -d "$KPORT_OVERLAYS_DIR" ]]; then
-    while IFS= read -r d; do
-      [[ "$d" == *"/example" ]] && continue
-      search_dirs+=("$d")
-    done < <(find "$KPORT_OVERLAYS_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+  # Include only registered+enabled overlays (same logic as kport_find_pacscript)
+  if [[ -d "$KPORT_OVERLAYS_DIR" && -f "${KPORT_CONFIG_DIR}/repositories.yml" ]]; then
+    while IFS= read -r overlay_name; do
+      [[ -z "$overlay_name" ]] && continue
+      [[ -d "${KPORT_OVERLAYS_DIR}/${overlay_name}" ]] && search_dirs+=("${KPORT_OVERLAYS_DIR}/${overlay_name}")
+    done < <(python3 "${KPORT_LIB}/list-overlays.py" \
+      "${KPORT_CONFIG_DIR}/repositories.yml" 2>/dev/null || true)
   fi
   search_dirs+=("$KPORT_PACKAGES_DIR")
   for search_root in "${search_dirs[@]}"; do
@@ -103,13 +105,32 @@ _search_from_pacscripts() {
 found=0
 
 _display_result() {
-  local pkgname="$1" pkgver="$2" pkgdesc="$3" category="$4"
+  local pkgname="$1" pkgver="$2" pkgdesc="$3" category="$4" pacscript_path="${5:-}"
   if [[ "$INSTALLED_ONLY" == "true" ]]; then
     kport_is_installed "$pkgname" || return 0
   fi
+
+  # Resolve pacscript path if not provided (live search path)
+  if [[ -z "$pacscript_path" ]]; then
+    pacscript_path=$(kport_find_pacscript "$pkgname" 2>/dev/null) || true
+  fi
+
+  # Status badges
+  local status_badge=""
+  if kport_is_masked "$pkgname" "$category" 2>/dev/null; then
+    status_badge=" ${C_RED}[masked]${C_RESET}"
+  elif [[ -n "$pacscript_path" ]] && ! kport_check_keyword "$pkgname" "$category" "$pacscript_path" 2>/dev/null; then
+    status_badge=" ${C_YELLOW}[~keyword]${C_RESET}"
+  fi
+
   local installed_marker=""
   kport_is_installed "$pkgname" && installed_marker=" ${C_GREEN}[installed]${C_RESET}"
-  echo -e "${C_BOLD}${pkgname}${C_RESET} ${C_DIM}${pkgver}${C_RESET}${installed_marker}"
+
+  # Overlay marker
+  local overlay_marker=""
+  [[ "$pacscript_path" == *"/overlays/"* ]] && overlay_marker=" ${C_DIM}[overlay]${C_RESET}"
+
+  echo -e "${C_BOLD}${pkgname}${C_RESET} ${C_DIM}${pkgver}${C_RESET}${installed_marker}${status_badge}${overlay_marker}"
   echo -e "  ${C_DIM}${category}${C_RESET}"
   [[ -n "$pkgdesc" ]] && echo "  ${pkgdesc}"
   echo ""
@@ -117,13 +138,13 @@ _display_result() {
 }
 
 if [[ -f "$INDEX_FILE" ]]; then
-  while IFS=$'\t' read -r pkgname pkgver pkgdesc category _path; do
-    _display_result "$pkgname" "$pkgver" "$pkgdesc" "$category"
+  while IFS=$'\t' read -r pkgname pkgver pkgdesc category pkg_path; do
+    _display_result "$pkgname" "$pkgver" "$pkgdesc" "$category" "$pkg_path"
   done < <(_search_from_index)
 else
   kport_warn "No search index — run 'kport index' to build one (falling back to live search)"
-  while IFS=$'\t' read -r pkgname pkgver pkgdesc category _path; do
-    _display_result "$pkgname" "$pkgver" "$pkgdesc" "$category"
+  while IFS=$'\t' read -r pkgname pkgver pkgdesc category pkg_path; do
+    _display_result "$pkgname" "$pkgver" "$pkgdesc" "$category" "$pkg_path"
   done < <(_search_from_pacscripts)
 fi
 
