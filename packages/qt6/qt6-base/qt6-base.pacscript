@@ -72,7 +72,6 @@ makedepends=(
   "libssl-dev"
   "libsystemd-dev"
   "libts-dev"
-  "liblttng-ust-dev"
   "libturbojpeg0-dev"
   "libudev-dev"
   "libvulkan-dev"

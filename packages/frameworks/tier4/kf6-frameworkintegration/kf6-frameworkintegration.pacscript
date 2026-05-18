@@ -29,7 +29,6 @@ makedepends=(
   "dbus-x11"
   "kf6-attica-dev"
   "kf6-extra-cmake-modules"
-  "kf6-attica-dev"
   "kf6-kcolorscheme-dev"
   "kf6-kconfig-dev"
   "kf6-kconfigwidgets"

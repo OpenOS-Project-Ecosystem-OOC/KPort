@@ -28,8 +28,6 @@ makedepends=(
   "cmake"
   "doxygen"
   "graphviz"
-  "doxygen"
-  "graphviz"
   "kf6-extra-cmake-modules"
   "kf6-karchive-dev"
   "kf6-kcolorscheme-dev"

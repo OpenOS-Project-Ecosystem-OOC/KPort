@@ -56,7 +56,6 @@ depends=(
   "milou"
   "ocean-sound-theme"
   "plasma5support"
-  "kf6-kactivities"
   "plasma-wayland-protocols"
   "qml6-module-org-kde-ksysguard"
   "qml6-module-org-kde-pipewire"

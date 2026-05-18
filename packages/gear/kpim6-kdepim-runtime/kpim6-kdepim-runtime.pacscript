@@ -95,7 +95,6 @@ makedepends=(
   "kpim6-kpimtextedit-dev"
   "kpim6-libkdepim-dev"
   "kpim6-libkgapi-dev"
-  "kpim6-kmailtransport-dev"
   "kpim6-pimcommon-dev"
   "libboost-atomic-dev"
   "libboost-dev"

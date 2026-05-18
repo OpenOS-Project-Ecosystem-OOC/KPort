@@ -36,9 +36,7 @@ makedepends=(
   "pkg-kde-tools"
   "qt6-base-dev"
   "qt6-shader-baker"
-  "<cross>"
   "qt6-shadertools-dev:native"
-  "<cross>"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────

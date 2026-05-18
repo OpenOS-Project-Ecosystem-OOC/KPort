@@ -43,9 +43,7 @@ makedepends=(
   "qt6-base-dev"
   "qt6-tools-dev"
   "xauth"
-  "<!nocheck>"
   "xvfb"
-  "<!nocheck>"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────

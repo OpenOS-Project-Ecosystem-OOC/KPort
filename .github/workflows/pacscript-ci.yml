@@ -1,0 +1,53 @@
+name: Pacscript CI
+
+# Runs on every push and PR that touches packages/, config/, or lib/.
+# Two jobs:
+#   lint     — validates required fields, sha256sums, and duplicate deps
+#   resolver — dry-runs kport_resolve on representative leaf packages
+
+on:
+  push:
+    paths:
+      - 'packages/**'
+      - 'config/dep-map.yml'
+      - 'lib/kport/resolve.sh'
+      - 'lib/kport/common.sh'
+      - 'scripts/kport/lint-pacscripts.sh'
+      - 'scripts/kport/resolver-check.sh'
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'config/dep-map.yml'
+      - 'lib/kport/resolve.sh'
+      - 'lib/kport/common.sh'
+      - 'scripts/kport/lint-pacscripts.sh'
+      - 'scripts/kport/resolver-check.sh'
+  workflow_dispatch:
+
+concurrency:
+  group: pacscript-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint pacscripts
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run pacscript linter
+        run: bash scripts/kport/lint-pacscripts.sh
+
+  resolver:
+    name: Resolver dry-run
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run resolver check
+        run: bash scripts/kport/resolver-check.sh
