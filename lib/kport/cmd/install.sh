@@ -106,11 +106,14 @@ _kport_build_direct() {
 
   kport_info "Build dir: ${build_dir}"
 
-  # Source the pacscript in a subshell to get source URLs, then fetch
+  # Source the pacscript in a subshell to get source URLs, then fetch.
+  # Handle pacstall "name::url" rename syntax by stripping the "name::" prefix.
   local source_url
   source_url=$(env "${build_env[@]}" bash -c "
     source '${pacscript}'
-    echo \"\${source[0]:-}\"
+    url=\"\${source[0]:-}\"
+    # Strip optional 'name::' rename prefix
+    echo \"\${url##*::}\"
   " 2>/dev/null)
 
   if [[ -z "$source_url" ]]; then
@@ -119,13 +122,24 @@ _kport_build_direct() {
   fi
 
   kport_info "Fetching: ${source_url}"
-  local tarball="${build_dir}/source.tar.xz"
+  # Preserve the original filename extension so tar auto-detects compression
+  local src_basename
+  src_basename=$(basename "$source_url")
+  local tarball="${build_dir}/${src_basename}"
   curl -fL --progress-bar -o "$tarball" "$source_url" \
     || { kport_error "Download failed"; return 1; }
 
   kport_info "Extracting..."
-  tar -xf "$tarball" -C "$build_dir" --strip-components=1 \
-    || { kport_error "Extraction failed"; return 1; }
+  # Use --strip-components=1 only when the archive has a single top-level dir
+  local top_dirs
+  top_dirs=$(tar -tf "$tarball" 2>/dev/null | cut -d/ -f1 | sort -u | wc -l)
+  if [[ "$top_dirs" -eq 1 ]]; then
+    tar -xf "$tarball" -C "$build_dir" --strip-components=1 \
+      || { kport_error "Extraction failed"; return 1; }
+  else
+    tar -xf "$tarball" -C "$build_dir" \
+      || { kport_error "Extraction failed"; return 1; }
+  fi
 
   kport_info "Building..."
   local pkgdir="${build_dir}/pkg"

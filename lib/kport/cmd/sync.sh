@@ -35,10 +35,12 @@ done
 
 # ── Parse repositories.yml ────────────────────────────────────────────────────
 
-REPOS_FILE="${KPORT_CONFIG_DIR}/repositories.yml"
-[[ -f "$REPOS_FILE" ]] || kport_die "repositories.yml not found: ${REPOS_FILE}"
+# repositories.yml: user config dir first, fall back to repo config/
+REPOS_FILE="${KPORT_CONF}/repositories.yml"
+[[ -f "$REPOS_FILE" ]] || REPOS_FILE="${KPORT_ROOT}/config/repositories.yml"
+[[ -f "$REPOS_FILE" ]] || kport_die "repositories.yml not found (checked ${KPORT_CONF} and ${KPORT_ROOT}/config)"
 
-# Emit: name|url|branch|local_path|enabled
+# Emit: name|url|branch|local_path  (only enabled entries, sorted by priority desc)
 parse_repositories() {
   python3 - "$REPOS_FILE" << 'PYEOF'
 import sys, re
@@ -49,17 +51,23 @@ with open(path) as f:
 
 lines = content.splitlines()
 in_repos = in_entry = False
+entries = []
 entry = {}
 
-def emit(e):
-    if e.get('enabled', 'true') == 'false':
+def finish(e):
+    if not e:
         return
-    print("{name}|{url}|{branch}|{local_path}".format(
-        name       = e.get('name', ''),
-        url        = e.get('url', ''),
-        branch     = e.get('branch', 'main'),
-        local_path = e.get('local_path', ''),
-    ))
+    if str(e.get('enabled', 'true')).lower() == 'false':
+        return
+    # local_path: explicit field or derive from name
+    local_path = e.get('local_path', '') or 'overlays/' + e.get('name', 'unknown')
+    entries.append({
+        'name':       e.get('name', ''),
+        'url':        e.get('url', ''),
+        'branch':     e.get('branch', 'main'),
+        'local_path': local_path,
+        'priority':   int(e.get('priority', 0)),
+    })
 
 for line in lines:
     stripped = line.strip()
@@ -70,16 +78,20 @@ for line in lines:
     if not in_repos:
         continue
     if re.match(r'^\s*-\s+name:', line):
-        if in_entry: emit(entry)
+        if in_entry: finish(entry)
         entry = {'name': re.sub(r'^\s*-\s+name:\s*', '', line).strip().strip('"\'') }
         in_entry = True; continue
     if in_entry:
-        m = re.match(r'^\s+(url|branch|local_path|enabled):\s*(.+)', line)
+        m = re.match(r'^\s+(url|branch|local_path|enabled|priority|auto_sync|description):\s*(.+)', line)
         if m:
             entry[m.group(1)] = m.group(2).strip().strip('"\'')
 
 if in_entry:
-    emit(entry)
+    finish(entry)
+
+# Sort by priority descending
+for e in sorted(entries, key=lambda x: -x['priority']):
+    print("{name}|{url}|{branch}|{local_path}".format(**e))
 PYEOF
 }
 
