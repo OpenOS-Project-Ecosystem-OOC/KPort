@@ -4,13 +4,32 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-_Description pending._
+KPort provides a Portage-inspired package repository tailored for KDE Neon, integrating Pacstall for package management. It enables users to customize builds with USE flags, ensures compatibility with diverse hardware layers (CPU/GPU/NPU), and automates the generation of pacscripts from KDE Neon packaging. This project is designed for developers and advanced users seeking fine-grained control over their KDE Neon package installations.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-_Architecture documentation pending._
+KPort consists of several key components: a hardware compatibility layer for CPU/GPU/NPU detection, a USE flag system for feature toggling, and automated pacscript generation based on KDE Neon packaging. The `hardware-detect.yml` workflow identifies system hardware and applies relevant optimizations. The repository structure organizes scripts, configurations, and generated files to streamline package management. The `bin` directory contains executable scripts, `config` holds configuration files, `db` manages package metadata, and `overlays` provides custom package definitions. The `generated` directory stores auto-generated pacscripts, while `lib` includes shared library scripts. `packages` defines available packages, and `scripts` contains utility scripts.
+
+```plaintext
+.
+├── .devcontainer/
+├── .github/
+├── .gitignore
+├── .gitlab-ci.yml
+├── .gitlab/
+├── LICENSE
+├── README.md
+├── bin/
+├── config/
+├── db/
+├── generated/
+├── lib/
+├── overlays/
+├── packages/
+└── scripts/
+```
 <!-- AI:end:architecture -->
 
 ## Install
@@ -33,7 +52,11 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-_CI documentation pending._
+The repository uses GitHub Actions for continuous integration. The following workflow is defined:
+
+- **hardware-detect.yml**: Runs hardware detection scripts to verify CPU, GPU, and NPU compatibility layers. Ensures proper configuration for hardware-specific optimizations. No secrets are required for this workflow.
+
+All workflows are located in the `.github/workflows` directory.
 <!-- AI:end:ci -->
 
 ## Mirror chain
