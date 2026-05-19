@@ -4,28 +4,30 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-KPort provides a Portage-inspired package management system tailored for KDE Neon, integrating Pacstall with support for USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates the generation of pacscripts from KDE Neon packaging, enabling developers and advanced users to customize and optimize their software installations for specific hardware and use cases.
+KPort provides a Portage-inspired package management system for KDE Neon, integrating Pacstall with support for USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates the generation of pacscripts from KDE Neon packaging, enabling users to customize and optimize software installations for their specific hardware and preferences.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of several key components: a hardware compatibility layer for CPU/GPU/NPU detection, a USE flag system for feature toggling, and automated pacscript generation based on KDE Neon packaging. The repository integrates with Pacstall for package management and uses GitHub Actions workflows (`hardware-detect.yml` and `pacscript-ci.yml`) for CI/CD tasks. The directory structure organizes scripts, configuration files, and generated outputs for streamlined development and deployment.
+KPort consists of several key components: a hardware compatibility layer for CPU, GPU, and NPU detection, a USE flag system for feature toggling, and automated pacscript generation based on KDE Neon packaging. The repository integrates with Pacstall for package management and uses GitHub Actions workflows (`hardware-detect.yml`, `pacscript-ci.yml`) for CI/CD. The directory structure organizes scripts, configuration files, and generated outputs for maintainability. Components interact through shell scripts that process hardware data, apply USE flags, and generate pacscripts dynamically.
 
 ```plaintext
 .
 ├── .devcontainer/       # Development container configuration
 ├── .github/             # GitHub Actions workflows
+├── .gitignore           # Git ignore rules
 ├── .gitlab-ci.yml       # GitLab CI configuration
+├── LICENSE              # Project license
+├── README.md            # Project documentation
 ├── bin/                 # Executable scripts
-├── config/              # Configuration files for the system
-├── db/                  # Database files for package metadata
-├── generated/           # Auto-generated pacscripts and related files
-├── lib/                 # Shared libraries and utilities
+├── config/              # Configuration files
+├── db/                  # Database for package metadata
+├── generated/           # Auto-generated pacscripts
+├── lib/                 # Library scripts
 ├── overlays/            # Custom package overlays
-├── packages/            # Package definitions and metadata
-├── scripts/             # Helper scripts for automation
-└── README.md            # Project documentation
+├── packages/            # Package definitions
+└── scripts/             # Utility and helper scripts
 ```
 <!-- AI:end:architecture -->
 
@@ -49,14 +51,9 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-The repository uses GitHub Actions for continuous integration. Workflows are in `.github/workflows/`.
+`hardware-detect.yml`: Detects CPU, GPU, and NPU hardware compatibility layers. Runs on push and pull request events. No secrets required.
 
-- **pacscript-ci.yml**: Runs on every push or PR touching `packages/`, `config/dep-map.yml`, `lib/`, `bin/kport`, or `scripts/kport/`. Three jobs:
-  - *Shell syntax check* — `bash -n` on all 24 scripts under `lib/`, `bin/kport`, and `scripts/kport/`
-  - *Lint pacscripts* — validates required fields (`pkgname`, `pkgver`, `sha256sums`, `KSLOT`, `KCATEGORY`), 64-char hex sha256sums, and duplicate `depends`/`makedepends` entries across all pacscripts
-  - *Resolver dry-run* — runs `kport_resolve` on five representative leaf packages (kf6-karchive, dolphin, kleopatra, kwin-wayland, qt6-declarative) and fails on missing KPort deps or circular dependency warnings
-
-- **hardware-detect.yml**: Manual workflow (`workflow_dispatch`) that runs the hardware detection scripts and posts CPU/GPU/NPU tier results as a job summary.
+`pacscript-ci.yml`: Validates and generates pacscripts from KDE Neon packaging. Runs on push and pull request events. Requires the `PACSTALL_TOKEN` secret for authentication with Pacstall.
 <!-- AI:end:ci -->
 
 ## Mirror chain
