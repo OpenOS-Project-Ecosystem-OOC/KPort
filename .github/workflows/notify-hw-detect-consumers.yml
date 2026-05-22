@@ -39,3 +39,5 @@ jobs:
                 "triggered_by": "${{ github.actor }}"
               }
             }' && echo "Dispatched kport-hw-detect-updated to fork-sync-all."
+    permissions:
+      contents: write  # Add permissions to allow dispatching events
