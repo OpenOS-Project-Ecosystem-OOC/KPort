@@ -122,5 +122,5 @@ It was created from the following upstream inspirations:
 ## License
 
 <!-- AI:start:license -->
-[MIT](https://github.com/Interested-Deving-1896/KPort/blob/main/LICENSE) © 2026 [Interested-Deving-1896](https://github.com/Interested-Deving-1896)
+<!-- License not detected — add a LICENSE file to this repo. -->
 <!-- AI:end:license -->
