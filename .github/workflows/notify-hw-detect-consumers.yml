@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Dispatch to fork-sync-all
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Ensure the correct secret is used
         run: |
           curl -sf \
             -X POST \
